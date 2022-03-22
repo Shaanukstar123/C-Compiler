@@ -28,3 +28,30 @@ class Function : public baseAST{
         //Function with parameters
         //Function(std::string returnType, std::string name, baseAST* multiStatements) {};
 };
+
+class FuncParamList : public baseAST{
+    //This class has all the updated variable context from the single parameters
+    public:
+        //Add parameters, and modify the node's local context as these are variables
+        void addParameter(baseAST* newParam) {
+            newParam->updateContext(nodeVariables, nodeVariableTypes);
+        }
+};
+
+class Parameter : public baseAST{
+    bool isPointer;
+    std::string paramtype;
+    std::string paramname;
+    //Function parameters have name and type 
+    public:
+        Parameter(std::string type, std::string name, bool pointer) {
+            isPointer = pointer;
+            paramtype = type;
+            paramname = name;
+        }
+        //Passing in parameters creates variables so these must be added to function context
+        void updateContext(variableContext &functionVars, variableTypeContext &functionVarTypes) {
+            functionVars.insert(std::make_pair(paramname, NULL));
+            functionVarTypes.insert(std::make_pair(paramname, paramtype));
+        }
+};

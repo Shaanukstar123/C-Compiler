@@ -23,7 +23,7 @@
 
 %token T_NUMVAL T_INT T_RETURN T_TYPE T_IDENTIFIER
 
-%type <program> program allFunctions defFunction funcParamList funcParam multiStatement
+%type <program> program allFunctions defFunction funcParamList funcParam codeBody
 %type <program> statement keyword expression
 %type <string> T_INT
 %type <integer> T_NUMVAL
@@ -32,27 +32,27 @@
 %start program
 
 %%
-program : allFunctions                                                                               {programRoot = $1;}
+program : allFunctions                                                              {programRoot = $1;}
         ;
 
-allFunctions    : defFunction                                                                        {$$ = new allFunction($1);}
-                | allFunctions defFunction                                                           {*(allFunction)$$->addFunction($1)} //Will add function to the main allFunction node
+allFunctions    : defFunction                                                       {$$ = new allFunction($1);}
+                | allFunctions defFunction                                          {*(allFunction)$$->addFunction($2)} //Will add function to the main allFunction node
                 ;
 
-defFunction     : T_TYPE T_IDENTIFIER '(' ')' '{' multiStatement '}'
-                | T_TYPE T_IDENTIFIER '(' funcParamList ')' '{' multiStatement '}'
+defFunction     : T_TYPE T_IDENTIFIER '(' ')' '{' codeBody '}'                      {$$ = new Function(*$1, *$2, $6);} //Function without params
+                | T_TYPE T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'        {$$ = new Function(*$1, *$2, $7, $4);} //Function with params
                 ;
 
-funcParamList   : funcParam
-                | funcParamList ',' funcParam
+funcParamList   : funcParam                                                         {$$ = new FuncParamList()->addParameter($1);} //Add first func parameter
+                | funcParamList ',' funcParam                                       {*(FuncParamList)->addParameter($3);}   //Add more func parameters
                 ;
 
-funcParam       : T_TYPE T_IDENTIFIER
-                | T_TYPE '*' T_IDENTIFIER
+funcParam       : T_TYPE T_IDENTIFIER                                               {$$ = new Parameter(*$1, *$2, False);} //Add parameter values
+                | T_TYPE '*' T_IDENTIFIER                                           {$$ = new Parameter(*$1, *$2, True);} //Add pointe parameter
                 ;
 
-multiStatement  : statement
-                | multiStatement statement
+codeBody        : statement
+                | codeBody statement
                 ;
 
 statement       : keyword
