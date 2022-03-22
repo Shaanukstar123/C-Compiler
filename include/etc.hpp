@@ -11,7 +11,9 @@ typedef std::map<std::string, std::string> variableTypeContext;  //Used to pass 
 //Enum containing the different node types
 enum nodeType {
     allFunctions_e,
-    function_e
+    function_e,
+    paramlist_e,
+    param_e
 };
 
 class baseAST {

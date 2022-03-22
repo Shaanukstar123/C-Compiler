@@ -1,5 +1,5 @@
 %code requires{
-    #include "ast.hpp"
+    #include "etc.hpp"
  
     //Linking AST to main
     extern const baseAST *programRoot;
@@ -13,7 +13,7 @@
 %union{
     int integer;
     std::string *string;
-    ProgramPtr program;
+    baseAST* ASTnode;
 }
 //T_NUM is actual number
 //T_INT is int keyword
@@ -23,8 +23,8 @@
 
 %token T_NUMVAL T_INT T_RETURN T_TYPE T_IDENTIFIER
 
-%type <program> program allFunctions defFunction funcParamList funcParam codeBody
-%type <program> statement keyword expression
+%type <ASTnode> program allFunctions defFunction funcParamList funcParam codeBody
+%type <ASTnode> statement keyword expression
 %type <string> T_INT
 %type <integer> T_NUMVAL
 
@@ -44,15 +44,15 @@ defFunction     : T_TYPE T_IDENTIFIER '(' ')' '{' codeBody '}'                  
                 ;
 
 funcParamList   : funcParam                                                         {$$ = new FuncParamList()->addParameter($1);} //Add first func parameter
-                | funcParamList ',' funcParam                                       {*(FuncParamList)->addParameter($3);}   //Add more func parameters
+                | funcParamList ',' funcParam                                       {*(FuncParamList)$$->addParameter($3);}   //Add more func parameters
                 ;
 
 funcParam       : T_TYPE T_IDENTIFIER                                               {$$ = new Parameter(*$1, *$2, False);} //Add parameter values
-                | T_TYPE '*' T_IDENTIFIER                                           {$$ = new Parameter(*$1, *$2, True);} //Add pointe parameter
+                | T_TYPE '*' T_IDENTIFIER                                           {$$ = new Parameter(*$1, *$2, True);} //Add pointer parameter
                 ;
 
-codeBody        : statement
-                | codeBody statement
+codeBody        : statement                                                         {$$ = new codeBody()->addStatement($1);} //One line of code in between braces
+                | codeBody statement                                                {*(codeBody)$$->addStatement($2);} //Mulitple lines of code in between braces
                 ;
 
 statement       : keyword
