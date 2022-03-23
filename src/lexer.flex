@@ -1,18 +1,16 @@
 %option noyywrap
 %{
-#include <stdio.h>
-#include "y.tab.h"
 
-void count();
+extern "C" int fileno(FILE *stream);
+#include "parser.tab.hpp"
 %}
 
 %%
 
 /* INTEGER*/
 [0-9]+    {
-    std::string num = yytext;
-    yylval.numberValue = std::stoi(num);
-    return Integer;}
+    yylval.integer = std::stoi(num);
+    return T_NUMVAL;}
 
 /* Basic requirements */
 

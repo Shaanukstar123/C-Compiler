@@ -1,3 +1,6 @@
+#ifndef ast_hpp
+#define ast_hpp
+
 #include "etc.hpp"
 
 typedef std::map<std::string, int> variableContext; //Used to pass variables between nodes in a function
@@ -22,3 +25,5 @@ class baseAST {
         virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes) const = 0;
         virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const = 0;
 };
+
+#endif

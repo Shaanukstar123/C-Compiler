@@ -12,7 +12,7 @@
 //yyval uses these
 %union{
     int integer;
-    std::string *string;
+    std::string* string;
     baseAST* ASTnode;
 }
 //T_NUM is actual number
@@ -55,20 +55,20 @@ codeBody        : statement                                                     
                 | codeBody statement                                                {*(codeBody)$$->addStatement($2);} //Mulitple lines of code in between braces
                 ;
 
-statement       : keyword
+statement       : keyword                                                           {$$ = $1;} 
                 ;
 
-keyword         : T_RETURN expression ';'
+keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
                 ;
 
-expression      : T_NUMVAL
+expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1)}                 
                 ;
 
 %%
 
 const baseAST *programRoot;
 
-const baseAST* generateAST(FILE *c_source) {
+const baseAST* generateAST(FILE* c_source) {
     programRoot = 0;
     yyparse(c_source);
     return programRoot;

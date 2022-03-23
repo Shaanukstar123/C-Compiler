@@ -19,13 +19,16 @@ int main(int argc, char **argv) {
 */  if (argv[0] != "-S") {
         exit(0);
     }
+    const variableContext variables;
+    const variableTypeRegContext variableTypes;
+    const variableTypeRegContext variableReg;
     FILE* c_source = fopen(argv[1], "r");
 
     std::ofstream machine_code(argv[3]);
     const baseAST *ast = generateAST(c_source);
     fclose(c_source);
 
-    ast->codeGeneration(output_file);
+    ast->codeGeneration(machine_code, variables, variableTypes, variableReg);
     machine_code.close();
 
     //std::cerr << std::endl;

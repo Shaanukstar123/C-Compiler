@@ -19,7 +19,8 @@ class allFunctions : public baseAST {
 class Function : public baseAST{
     public:
         variableContext paramVars;
-        variableTypeContext paramTypes;
+        variableTypeRegContext paramTypes;
+        variableTypeRegContext paramReg;
         //Function with no parameter list
         Function(std::string returnType, std::string name, baseAST* multiStatements) {
             node = function_e;
@@ -44,7 +45,7 @@ class FuncParamList : public baseAST{
             newParam->updateContext(nodeVariables, nodeVariableTypes);
         }
         //Called by function to update its context
-        void updateContext(variableContext &functionVars, variableTypeContext &functionVarTypes) {
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) {
             functionVars.insert(nodeVariables.begin(), nodeVariables.end());
             functionVarTypes.insert(nodeVariableTypes.begin(), nodeVariableTypes.end());
             //Function params do not need to update their context to match the entire function
@@ -63,7 +64,7 @@ class Parameter : public baseAST{
             paramname = name;
         }
         //Passing in parameters creates variables so these must be added to function context
-        void updateContext(variableContext &functionVars, variableTypeContext &functionVarTypes) {
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) {
             functionVars.insert(std::make_pair(paramname, NULL));
             functionVarTypes.insert(std::make_pair(paramname, paramtype));
         }
