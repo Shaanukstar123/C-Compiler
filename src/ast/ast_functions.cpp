@@ -17,6 +17,7 @@ class allFunctions : public baseAST {
             //Update the context of all functions before starting
             for(int i = 0; i < functionList.size(); i++) {
                 functionList[i]->updateContext();
+                functionList[i]->codeGeneration(outputFile);
             }
         }
 };
@@ -42,6 +43,7 @@ class Function : public baseAST{
         void updateContext() {
             statementList->updateContext(paramVars, paramTypes);
         }
+
 
 };
 

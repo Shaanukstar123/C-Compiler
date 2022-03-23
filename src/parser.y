@@ -36,7 +36,7 @@ program : allFunctions                                                          
         ;
 
 allFunctions    : defFunction                                                       {$$ = new allFunction($1);}
-                | allFunctions defFunction                                          {*(allFunction)$$->addFunction($2)} //Will add function to the main allFunction node
+                | allFunctions defFunction                                          {*(allFunction)$$->addFunction($2);} //Will add function to the main allFunction node
                 ;
 
 defFunction     : T_TYPE T_IDENTIFIER '(' ')' '{' codeBody '}'                      {$$ = new Function(*$1, *$2, $6);} //Function without params
@@ -61,7 +61,7 @@ statement       : keyword                                                       
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
                 ;
 
-expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1)}                 
+expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1);}                 
                 ;
 
 %%
