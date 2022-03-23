@@ -21,7 +21,9 @@ class baseAST {
         variableTypeRegContext nodeVariableTypes;
         variableTypeRegContext variableRegisters;
     public:
+        virtual void codeGeneration(std::ofstream &outputFile) const = 0;
         virtual void codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const = 0;
+        virtual void updateContext() const = 0;
         virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes) const = 0;
         virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const = 0;
         std::string outputComment(std::string outputComment) {}

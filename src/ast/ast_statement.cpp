@@ -6,4 +6,9 @@ class codeBody : public baseAST{
         void addStatement(baseAST* statement) {
             statementList.push_back(statement);
         }
+        void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes) {
+            for(int i = 0; i < statementList.size(); i++) {
+                statementList[i]->updateContext(funcVariables, funcVariableTypes);
+            }
+        }
 };

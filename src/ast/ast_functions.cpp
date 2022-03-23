@@ -2,8 +2,7 @@
 
 class allFunctions : public baseAST {
     public:
-        //The top level node contains references to all functions and a map containing their contexts  
-        //std::map<baseAST*, std::map<variableContext, variableTypeContext>> functionList;
+        //List of functions
         std::vector<baseAST*> functionList;
         allFunctions(baseAST* firstFunction) {
             node = allFunctions_e; 
@@ -12,7 +11,13 @@ class allFunctions : public baseAST {
         void addFunction(baseAST* newFunction) {
             //Add new function to list
             functionList.push_back(newFunction);
-            //functionList[newFunction].insert(std::make_pair(new variableContext, new variableTypeContext));
+        }
+        //Code generation function
+        void codeGeneration(std::ofstream &outputFile) {
+            //Update the context of all functions before starting
+            for(int i = 0; i < functionList.size(); i++) {
+                functionList[i]->updateContext();
+            }
         }
 };
 
@@ -21,17 +26,23 @@ class Function : public baseAST{
         variableContext paramVars;
         variableTypeRegContext paramTypes;
         variableTypeRegContext paramReg;
+        baseAST* statementList;
         //Function with no parameter list
         Function(std::string returnType, std::string name, baseAST* multiStatements) {
             node = function_e;
-            baseAST* statementList = multiStatements;
+            statementList = multiStatements;
         }
         //Function with parameters
         Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) {
             baseAST* statementList = multiStatements;
             //Add context from parameters into function context
             paramList->updateContext(paramVars, paramTypes); //<- Update the arguments of the function
-        };
+        }
+        //Update function context and save them 
+        void updateContext() {
+            statementList->updateContext(paramVars, paramTypes);
+        }
+
 };
 
 class FuncParamList : public baseAST{
