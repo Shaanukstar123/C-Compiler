@@ -2,6 +2,8 @@
 #define etc_hpp
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <map>
 #include <vector>
 #include "ast\ast.hpp"
