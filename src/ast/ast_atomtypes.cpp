@@ -2,11 +2,12 @@
 
 class NUMVAL : public baseAST {
     public:
+        int value;
         NUMVAL(int value) {
-            int value = value;
+            value = value;
         }
 
-        void codeGen(std::ofstream &outputFile, int numvalue){
-            outputFile<<"li "<<"$2,"<<numvalue;
+        void codeGen(std::ofstream &outputFile){
+            outputFile<<"li "<<"$2,"<<value;
         }
 };
