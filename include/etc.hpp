@@ -6,9 +6,11 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "ast\ast.hpp"
+#include "ast/ast.hpp"
 
 extern const baseAST* generateAST(FILE* c_source);
+
+
 
 #endif
 

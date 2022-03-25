@@ -26,7 +26,7 @@
 %type <ASTnode> program allFunctions defFunction funcParamList funcParam codeBody
 %type <ASTnode> statement keyword expression decleration
 %type <string> T_INT dataType
-%type <integer> T_NUMVAL
+%type <integer> T_NUMVAL T_IDENTIFIER
 
 
 %start program
@@ -48,7 +48,7 @@ funcParamList   : funcParam                                                     
                 ;
 
 funcParam       : dataType T_IDENTIFIER                                             {$$ = new Parameter(*$1, *$2, False);} //Add parameter values
-                | dataType '*' T_IDENTIFIER                                         {$$ = new Parameter(*$1, *$2, True);} //Add pointer parameter
+                | dataType '*' T_IDENTIFIER                                         {$$ = new Parameter(*$1, *$3, True);} //Add pointer parameter
                 ;
 
 codeBody        : statement                                                         {$$ = new codeBody()->addStatement($1);} //One line of code in between braces
@@ -64,7 +64,8 @@ decleration     : dataType T_IDENTIFIER ';'                                     
                 | dataType T_IDENTIFIER '=' expression ';'                          {$$ = new decleration(*$2, $4);}
                 ;
 
-dataType        | T_INT                                                             {$$ = new std::string('int');}
+dataType        : T_INT                                                             {$$ = new std::string("int");}
+                ;
 
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
                 ;
