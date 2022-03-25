@@ -24,8 +24,8 @@
 %token T_NUMVAL T_INT T_RETURN T_TYPE T_IDENTIFIER
 
 %type <ASTnode> program allFunctions defFunction funcParamList funcParam codeBody
-%type <ASTnode> statement keyword expression
-%type <string> T_INT
+%type <ASTnode> statement keyword expression decleration
+%type <string> T_INT dataType
 %type <integer> T_NUMVAL
 
 
@@ -39,24 +39,32 @@ allFunctions    : defFunction                                                   
                 | allFunctions defFunction                                          {*(allFunction)$$->addFunction($2)} //Will add function to the main allFunction node
                 ;
 
-defFunction     : T_TYPE T_IDENTIFIER '(' ')' '{' codeBody '}'                      {$$ = new Function(*$1, *$2, $6);} //Function without params
-                | T_TYPE T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'        {$$ = new Function(*$1, *$2, $7, $4);} //Function with params
+defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                    {$$ = new Function(*$1, *$2, $6);} //Function without params
+                | dataType T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'      {$$ = new Function(*$1, *$2, $7, $4);} //Function with params
                 ;
 
 funcParamList   : funcParam                                                         {$$ = new FuncParamList()->addParameter($1);} //Add first func parameter
                 | funcParamList ',' funcParam                                       {*(FuncParamList)$$->addParameter($3);}   //Add more func parameters
                 ;
 
-funcParam       : T_TYPE T_IDENTIFIER                                               {$$ = new Parameter(*$1, *$2, False);} //Add parameter values
-                | T_TYPE '*' T_IDENTIFIER                                           {$$ = new Parameter(*$1, *$2, True);} //Add pointer parameter
+funcParam       : dataType T_IDENTIFIER                                             {$$ = new Parameter(*$1, *$2, False);} //Add parameter values
+                | dataType '*' T_IDENTIFIER                                         {$$ = new Parameter(*$1, *$2, True);} //Add pointer parameter
                 ;
 
 codeBody        : statement                                                         {$$ = new codeBody()->addStatement($1);} //One line of code in between braces
                 | codeBody statement                                                {*(codeBody)$$->addStatement($2);} //Mulitple lines of code in between braces
                 ;
 
-statement       : keyword                                                           {$$ = $1;} 
+statement       : decleration                                                       {$$ = $1;} //Declering a variable
+                | T_IDENTIFIER '=' expression ';'                                   {$$ = new Assign(*$1, $3);} //Assigning to a variable
+                | keyword                                                           {$$ = $1;} //A keyword stateword ie return
                 ;
+
+decleration     : dataType T_IDENTIFIER ';'                                         {$$ = new decleration(*$2);}
+                | dataType T_IDENTIFIER '=' expression ';'                          {$$ = new decleration(*$2, $4);}
+                ;
+
+dataType        | T_INT                                                             {$$ = new std::string('int');}
 
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
                 ;
