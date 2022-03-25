@@ -28,10 +28,13 @@ class Function : public baseAST{
         variableTypeRegContext paramTypes;
         variableTypeRegContext paramReg;
         baseAST* statementList;
+        baseAST* paramList;
+        std::string FuncName;
         //Function with no parameter list
         Function(std::string returnType, std::string name, baseAST* multiStatements) {
             node = function_e;
             statementList = multiStatements;
+            FuncName = name;
         }
         //Function with parameters
         Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) {
@@ -41,7 +44,8 @@ class Function : public baseAST{
         }
         //Update function context and save them 
         void updateContext() {
-            statementList->updateContext(paramVars, paramTypes);
+            paramList->updateContext(paramVars, paramTypes);
+            statementList->updateContext(nodeVariables, nodeVariableTypes);
         }
 
 
