@@ -1,10 +1,13 @@
 #ifndef ast_atomtypes.hpp
 #define ast_atomtypes.hpp
-#include "etc.hpp"
+#include "ast.hpp"
 
 class NUMVAL : public baseAST {
+    int value;
     public:
-        NUMVAL(int value) { }
+        NUMVAL(int value);
+        void updateContext();
+        void codeGeneration(std::ofstream &outputFile);
 };
 
 #endif

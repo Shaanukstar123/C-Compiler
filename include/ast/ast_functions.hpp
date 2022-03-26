@@ -1,12 +1,14 @@
 #ifndef ast_functions.hpp
 #define ast_functions.hpp
-#include "etc.hpp"
+#include "ast.hpp"
 
 class allFunctions : public baseAST {
     public:
+        //List of functions
         std::vector<baseAST*> functionList;
-        allFunctions(baseAST* firstFunction) {  }
-        void addFunction(baseAST* newFunction) {  }
+        allFunctions(baseAST* firstFunction);
+        void addFunction(baseAST* newFunction);
+        void codeGeneration(std::ofstream &outputFile);
 };
 
 class Function : public baseAST{
@@ -14,24 +16,28 @@ class Function : public baseAST{
         variableContext paramVars;
         variableTypeRegContext paramTypes;
         variableTypeRegContext paramReg;
-        Function(std::string returnType, std::string name, baseAST* multiStatements) { }
-        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) { };
+        baseAST* statementList;
+        baseAST* paramList;
+        std::string FuncName;
+        Function(std::string returnType, std::string name, baseAST* multiStatements);
+        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList);
+        void updateContext();
 };
 
 class FuncParamList : public baseAST{
     public:
-        FuncParamList() { }
-        void addParameter(baseAST* newParam) { }
-        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) { }
+        FuncParamList(baseAST* firstParam);
+        void addParameter(baseAST* newParam);
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes);
 };
 
 class Parameter : public baseAST{
-    bool isPointer;
+    int isPointer;
     std::string paramtype;
     std::string paramname;
     public:
-        Parameter(std::string type, std::string name, bool pointer) { }
-        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) { }
+        Parameter(std::string type, std::string name, int pointer);
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes);
 };
 
 
