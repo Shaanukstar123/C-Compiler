@@ -28,4 +28,13 @@ class Assign : public baseAST {
         Assign(std::string varName, baseAST* varExpression);
         void codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string regName);
 };
+
+class functionCall : public baseAST {
+    public:
+        std::string funcName;
+        std::string funcType;
+        baseAST* paramList;
+        functionCall(std::string funcType, std::string funcName);
+        functionCall(std::string funcType, std::string funcName, baseAST* paramList);
+};
 #endif

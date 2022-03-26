@@ -19,6 +19,7 @@ class Function : public baseAST{
         baseAST* statementList;
         baseAST* paramList;
         std::string FuncName;
+        Function(std::string returnType, std::string name);
         Function(std::string returnType, std::string name, baseAST* multiStatements);
         Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList);
         void updateContext();

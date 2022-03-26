@@ -1,6 +1,6 @@
 #include "etc.hpp"
 
-
+//Code body that contains a reference to all other ASTs
 codeBody::codeBody(baseAST* firstStatement) {
     this->addStatement(firstStatement);
 }
@@ -24,6 +24,7 @@ void varDeclare::updateContext(variableContext const funcVariables, variableType
     expression->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
 }
 
+//A variable assignment
 Assign::Assign(std::string varName, baseAST* varExpression) {
     varName = varName;
     varExpression = varExpression;
@@ -34,4 +35,16 @@ void Assign::codeGeneration(std::ofstream &outputFile, const variableContext fun
     } else {
         std::cout << "Error variable " + varName + " not declared" << std::endl;
     }
+}
+
+//A function call
+//Function call
+functionCall::functionCall(std::string funcType, std::string funcName) {
+    funcName = funcName;
+    funcType = funcType;
+}
+functionCall::functionCall(std::string funcType, std::string funcName, baseAST* paramList) {
+    funcName = funcName;
+    funcType = funcType;
+    paramList = paramList;
 }

@@ -1,5 +1,7 @@
 #include "etc.hpp"
 
+
+//AllFunctions
 allFunctions::allFunctions(baseAST* firstFunction) {
         node = allFunctions_e; 
         this->addFunction(firstFunction);
@@ -19,6 +21,10 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) {
 
 
 //Functions
+//Function with no code ie int f();
+Function::Function(std::string returnType, std::string name) {
+    FuncName = name;
+}
 //Function with no parameter list
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements) {
         node = function_e;
@@ -56,7 +62,6 @@ void FuncParamList::updateContext(variableContext &functionVars, variableTypeReg
     }
 
 //Parameter
-
 //Function parameters have variable name and type 
 Parameter::Parameter(std::string type, std::string name, int pointer) {
         isPointer = pointer;
