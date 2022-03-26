@@ -14,6 +14,16 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) {
         for(int i = 0; i < functionList.size(); i++) {
             functionList[i]->updateContext();
             functionList[i]->codeGeneration(outputFile);
+
+//Loads everything from stack, back to memory for each function
+            outputFile<<"nop"<<std::endl;
+            outputFile<<"move $29,$30"<<std::endl;
+            outputFile<<"lw $31,4($29)"<<std::endl;
+            outputFile<<"lw $30,0($29)"<<std::endl;
+            outputFile<<"addiu,$29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
+            outputFile<<"j $31"<<std::endl;
+            outputFile<<"nop"<<std::endl;
+
         }
     }
 
@@ -41,7 +51,9 @@ void Function::codeGeneration(std::ofstream &outputFile){ //doesn't support para
     outputFile<<FuncName<<"():"<<std::endl;
     outputFile<<"addiu $29,$29,-8"<<std::endl;
     outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
-    outputFile<<"sw $30,0($29)"<<std::endl;} //Stores frame pointer on top of it
+    outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
+    outputFile<<"move $30,$29" << std::endl;//stores
+}
 
 //FuncParamList
 //This class has all the updated variable context from the single parameters
