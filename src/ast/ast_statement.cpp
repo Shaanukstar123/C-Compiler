@@ -11,6 +11,9 @@ class codeBody : public baseAST{
                 statementList[i]->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
             }
         }
+                
+            
+        
 };
 
 class decleration : public baseAST{
