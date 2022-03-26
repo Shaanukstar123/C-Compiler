@@ -6,11 +6,14 @@
 #include <string>
 #include <map>
 #include <vector>
+
 #include "ast/ast.hpp"
+#include "ast/ast_atomtypes.hpp"
+#include "ast/ast_functions.hpp"
+#include "ast/ast_keywords.hpp"
+#include "ast/ast_statement.hpp"
 
 extern const baseAST* generateAST(FILE* c_source);
-
-
 
 #endif
 
