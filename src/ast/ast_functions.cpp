@@ -41,7 +41,7 @@ void Function::codeGeneration(std::ofstream &outputFile){ //doesn't support para
     outputFile<<FuncName<<"():"<<std::endl;
     outputFile<<"addiu $29,$29,-8"<<std::endl;
     outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
-    outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
+    outputFile<<"sw $30,0($29)"<<std::endl;} //Stores frame pointer on top of it
 
 //FuncParamList
 //This class has all the updated variable context from the single parameters
