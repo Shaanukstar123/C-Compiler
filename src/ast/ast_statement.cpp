@@ -11,6 +11,17 @@ void codeBody::updateContext(variableContext const funcVariables, variableTypeRe
     for(int i = 0; i < statementList.size(); i++) {
         statementList[i]->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
     }
+    
+}
+//Code Generation
+
+void codeBody::codeGeneration(std::ofstream &outputFile){
+    for (int i=0;i<statementList.size();i++){
+        statementList[i]->codeGeneration(outputFile);
+    }
+    
+    }
+
 }
 //Decleration with no expression
 varDeclare::varDeclare(std::string varName) {

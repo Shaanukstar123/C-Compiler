@@ -9,6 +9,7 @@ class codeBody : public baseAST{
         codeBody(baseAST* firstStatement);
         void addStatement(baseAST* statement);
         void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes, variableTypeRegContext const funcVariablesReg);
+        void codeGeneration(std::ofstream &outputFile);
 };
 
 
