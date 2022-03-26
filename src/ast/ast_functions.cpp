@@ -17,15 +17,6 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) {
         }
     }
 
-        void codeGeneration(std::ofstream &outputFile){ //doesn't support params yet
-            outputFile<<FuncName<<"():"<<std::endl;
-            outputFile<<"addiu $29,$29,-8"<<std::endl;
-            outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
-            outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
-
-        }
-
-
 //Functions
 //Function with no parameter list
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements) {
@@ -43,8 +34,14 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
 void Function::updateContext() {
         paramList->updateContext(paramVars, paramTypes);
         statementList->updateContext(nodeVariables, nodeVariableTypes);
+
     }
 
+void Function::codeGeneration(std::ofstream &outputFile){ //doesn't support params yet
+    outputFile<<FuncName<<"():"<<std::endl;
+    outputFile<<"addiu $29,$29,-8"<<std::endl;
+    outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
+    outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
 
 //FuncParamList
 //This class has all the updated variable context from the single parameters
