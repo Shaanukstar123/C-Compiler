@@ -48,6 +48,12 @@ class Function : public baseAST{
             statementList->updateContext(nodeVariables, nodeVariableTypes);
         }
 
+        void codeGeneration(std::ofstream &outputFile){
+            //print label-funcname
+            //godbolt it son
+
+        }
+
 
 };
 
