@@ -1,20 +1,17 @@
-#ifndef ast_statement.hpp
-#define ast_statement.hpp
+#ifndef ast_operators.hpp
+#define ast_operators.hpp
 
 #include "ast.hpp"
 
 class baseOP : public baseAST {
-    baseAST* leftChild;
-    baseAST* rightChild;
-    baseOP(baseAST* leftChild, baseAST* rightChild) {
-        leftChild = leftChild;
-        rightChild = rightChild;
-    }
+    public:
+        baseAST* leftChild;
+        baseAST* rightChild;
 };
 
 class addOperator : public baseAST {
-    
+    public:
+        addOperator(baseAST* leftChild, baseAST* rightChild);
 };
-
 
 #endif

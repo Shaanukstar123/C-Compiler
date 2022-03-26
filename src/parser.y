@@ -85,11 +85,11 @@ expression      : T_NUMVAL                                                      
 
 //A function call
 funcCall        : dataType T_IDENTIFIER '(' ')'                                     {$$ = new functionCall(*$1, *$2);}
-                | dataType T_IDENTIFIER '(' funcParamList ')'                       {$$ = new functionCall(*$1, *$2, $3);}
+                | dataType T_IDENTIFIER '(' funcParamList ')'                       {$$ = new functionCall(*$1, *$2, $4);}
                 ; 
 
 //All arithmetic operations
-operation       : operation '+' term                                                {$$ = new addOperator($1, $2);}
+operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}
                 | term                                                              {$$ = $1;}
                 ;
 
@@ -102,6 +102,6 @@ const baseAST* programRoot;
 
 const baseAST* generateAST(FILE* c_source) {
     programRoot = 0;
-    yyparse(c_source);
+    yyparse();
     return programRoot;
 }

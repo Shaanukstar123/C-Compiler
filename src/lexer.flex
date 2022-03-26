@@ -9,18 +9,16 @@ extern "C" int fileno(FILE *stream);
 
 %%
 
-/* Numbers */
-[0-9]+    {yylval.integer = std::stoi(yytext); return T_NUMVAL;}
 
- /* Variables */
-[_a-zA-Z][0-9_a-zA-Z]*            {std::string *text=new std::string(yytext);  yylval.string=text; return T_IDENTIFIER;}
+[0-9]+    {/* Numbers */ yylval.integer = std::stoi(yytext); return T_NUMVAL;}
 
-/* Keywords */
-int		  	  { return(T_INT); }
+[_a-zA-Z][0-9_a-zA-Z]*            {  /* Variables */ std::string *text=new std::string(yytext);  yylval.string=text; return T_IDENTIFIER;}
+
+
+int		  	  {/* Keywords */ return(T_INT); }
 return		  { return(T_RETURN); }
 
-/* operators*/
-+                                {return yytext[0];}
+[+]                                {/* operators*/ return yytext[0];}
 %%
 
 void yyerror (char const *s)
