@@ -21,8 +21,6 @@ void codeBody::codeGeneration(std::ofstream &outputFile){
     }
     
     }
-
-}
 //Decleration with no expression
 varDeclare::varDeclare(std::string varName) {
     varName = varName;
