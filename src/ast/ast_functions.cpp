@@ -22,7 +22,7 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) const {
             outputFile<<"move $29,$30"<<std::endl;
             outputFile<<"lw $31,4($29)"<<std::endl;
             outputFile<<"lw $30,0($29)"<<std::endl;
-            outputFile<<"addiu,$29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
+            outputFile<<"addiu $29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
             outputFile<<"j $31"<<std::endl;
             outputFile<<"nop"<<std::endl;
 

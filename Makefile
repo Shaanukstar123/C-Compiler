@@ -1,5 +1,5 @@
 CPPFLAGS += -std=c++17
-CPPFLAGS += -W -Wall -g 
+CPPFLAGS += -W -Wall -g -O0
 CPPFLAGS += -I include # search header files in `/include`
 CPPFLAGS += -Wno-unused-parameter
 
@@ -25,6 +25,7 @@ bin/c_compiler : src/c_compiler.o src/lexer.yy.o src/parser.tab.o $(ast_o)
 clean: 
 	@echo Cleaning ... 
 	-rm -f src/*.o 
+	-rm -f bin/*.o 
 	-rm -f src/ast/*.o 
 	-rm -f src/*.output
 	-rm -f src/*.tab.cpp 
