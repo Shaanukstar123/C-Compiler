@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 
+class baseAST;
+
 typedef std::map<std::string, int> variableContext; //Used to pass variables between nodes in a function
 typedef std::map<std::string, std::string> variableTypeRegContext;  //Used to pass variable types
 
@@ -31,17 +33,21 @@ class baseAST {
 
         
     public:
-        virtual void codeGeneration(std::ofstream &outputFile) const;
-        virtual void codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const;
-        virtual void codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters, std::string regName) const;
-        virtual void updateContext() const;
-        virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes) const;
-        virtual void updateContext(variableContext const nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const;
+        virtual ~baseAST() {};
+        //Code generation function that outputs to a file
+        virtual void codeGeneration(std::ofstream &outputFile) const {};
+        virtual void codeGeneration(std::ofstream &outputFile, const variableContext &nodeVariables, const variableTypeRegContext &nodeVariableTypes, const variableTypeRegContext &variableRegisters) const {};
+        virtual void codeGeneration(std::ofstream &outputFile, const variableContext &nodeVariables, const variableTypeRegContext &nodeVariableTypes, const variableTypeRegContext &variableRegisters, std::string regName) const {};
+        //Function used to update the variable contexts within a function (so variables in other code all refer to the same variable in other code in the same function)
+        virtual void updateContext() const {};
+        virtual void updateContext(variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes) {};
+        virtual void updateContext(variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext variableRegisters) {};
+        //Method to output a comment to the MIPS assembly file (comments are ignored by assembler)
         std::string outputComment(std::string outputComment);
         //Other functions
-        void addFunction(baseAST* newFunction);
-        void addParameter(baseAST* newParam);
-        void addStatement(baseAST* statement);
+        virtual void addFunction(baseAST* newFunction) {};
+        virtual void addParameter(baseAST* newParam) {};
+        virtual void addStatement(baseAST* statement) {};
 };
 
 #endif

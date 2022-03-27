@@ -13,7 +13,7 @@ all: bin/c_compiler
 	g++ $(CPPFLAGS) -o $@ -c $<
 
 src/parser.tab.cpp src/parser.tab.hpp: src/parser.y 
-	bison -v -d src/parser.y -o src/parser.tab.cpp 
+	bison -t -v -d src/parser.y -o src/parser.tab.cpp 
 
 src/lexer.yy.cpp: src/lexer.flex src/parser.tab.hpp 
 	flex -o src/lexer.yy.cpp src/lexer.flex 
@@ -21,17 +21,6 @@ src/lexer.yy.cpp: src/lexer.flex src/parser.tab.hpp
 bin/c_compiler : src/c_compiler.o src/lexer.yy.o src/parser.tab.o $(ast_o)
 	mkdir -p bin 
 	g++ $(CPPFLAGS) -o $@ $^
-
-test:
-	./run_tests.sh -r ./compiler_tests
-.PHONY: test
-
-clean_test:
-	find . -name \*.s -type f -delete
-	find . -name \*.o -type f -delete
-	find . -name \*.bin -type f -delete
-	find . -name \*.output -type f -delete
-.PHONY: clean_test
 
 clean: 
 	@echo Cleaning ... 
@@ -42,4 +31,5 @@ clean:
 	-rm -f src/*.tab.hpp 
 	-rm -f src/*.yy.cpp	
 	-rm -f bin/c_compiler 
+	-rm -f bin/*.s
 .PHONY: clean 

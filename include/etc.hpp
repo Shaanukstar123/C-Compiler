@@ -14,7 +14,7 @@
 #include "ast/ast_statement.hpp"
 #include "ast/ast_operators.hpp"
 
-extern const baseAST* generateAST(FILE* c_source);
+extern const baseAST* generateAST(std::string c_source);
 
 #endif
 

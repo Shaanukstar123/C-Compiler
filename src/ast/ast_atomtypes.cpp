@@ -9,6 +9,6 @@ void NUMVAL::updateContext() {
 
 }
 
-void NUMVAL::codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters, std::string destReg){
+void NUMVAL::codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string destReg) const{
     outputFile<<"li "<<destReg<<" "<<value;
 }

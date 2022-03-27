@@ -8,7 +8,7 @@ class allFunctions : public baseAST {
         std::vector<baseAST*> functionList;
         allFunctions(baseAST* firstFunction);
         void addFunction(baseAST* newFunction);
-        void codeGeneration(std::ofstream &outputFile);
+        void codeGeneration(std::ofstream &outputFile) const;
 };
 
 class Function : public baseAST{

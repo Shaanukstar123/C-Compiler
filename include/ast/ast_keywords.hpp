@@ -6,8 +6,9 @@ class Return : public baseAST {
     baseAST* returnExpr;
     public:
         Return(baseAST* expression);
-        void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes);
-        void codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters, std::string regName);
+        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes);
+        void codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string destReg) const;
+        
 };
 
 #endif
