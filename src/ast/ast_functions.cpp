@@ -16,13 +16,14 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) const {
         for (int i = 0; i < functionList.size(); i++) {
             functionList[i]->updateContext();
             functionList[i]->codeGeneration(outputFile);
-
+            // outputFile<<FunctionList->name;
 //Loads everything from stack, back to memory for each function
+
             outputFile<<"nop"<<std::endl;
             outputFile<<"move $29,$30"<<std::endl;
             outputFile<<"lw $31,4($29)"<<std::endl;
             outputFile<<"lw $30,0($29)"<<std::endl;
-            outputFile<<"addiu,$29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
+            outputFile<<"addiu $29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
             outputFile<<"j $31"<<std::endl;
             outputFile<<"nop"<<std::endl;
 
@@ -48,6 +49,7 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
         baseAST* statementList = multiStatements;
         //Add context from parameters into function context
         paramList->updateContext(paramVars, paramTypes); //<- Update the arguments of the function
+        FuncName = name;
     }
 //Update function context and save them 
 void Function::updateContext() {
@@ -56,7 +58,8 @@ void Function::updateContext() {
 
     }
 
-void Function::codeGeneration(std::ofstream &outputFile){ //doesn't support params yet
+void Function::codeGeneration(std::ofstream &outputFile)const{ //doesn't support params yet
+
     outputFile<<FuncName<<"():"<<std::endl;
     outputFile<<"addiu $29,$29,-8"<<std::endl;
     outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
