@@ -48,7 +48,7 @@ void Assign::codeGeneration(std::ofstream &outputFile, const variableContext fun
     } else {
         std::cout << "Error variable " + varName + " not declared" << std::endl;
     }
-    funcVariables[varName]=(funcVariables.size()*4)+4; //FIX UP
+    //funcVariables[varName]=(funcVariables.size()*4)+4; //FIX UP
     outputFile<<"li $2,"<<destReg<<std::endl;
     outputFile<<"sw $2,"<<funcVariables[];
 }
