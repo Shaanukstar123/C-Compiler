@@ -28,6 +28,8 @@ class baseAST {
         variableTypeRegContext nodeVariableTypes;
         //A map of variable names and the registers they will be allocated to
         variableTypeRegContext variableRegisters;
+
+        
     public:
         virtual void codeGeneration(std::ofstream &outputFile) const;
         virtual void codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters) const;
