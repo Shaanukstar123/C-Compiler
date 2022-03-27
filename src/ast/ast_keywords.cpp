@@ -8,6 +8,6 @@ void Return::updateContext(variableContext &funcVariables, variableTypeRegContex
     returnExpr->updateContext(funcVariables, funcVariableTypes);
 }
 
-void Return::codeGeneration(std::ofstream &outputFile, const variableContext nodeVariables, const variableTypeRegContext nodeVariableTypes, const variableTypeRegContext variableRegisters, std::string regName){
+void Return::codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string destReg) const{
     returnExpr->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,"$2");
 }
