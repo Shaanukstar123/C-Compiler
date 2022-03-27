@@ -9,7 +9,7 @@ void Return::updateContext(variableContext &funcVariables, variableTypeRegContex
 }
 
 void Return::codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string destReg) const{
-    outputFile<<"yos";
+    std::cout<<"Return \n";
     returnExpr->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,"$2");
 
 }

@@ -16,6 +16,8 @@ void codeBody::updateContext(variableContext &funcVariables, variableTypeRegCont
 //Code Generation
 
 void codeBody::codeGeneration(std::ofstream &outputFile)const{
+    std::cout<<"Codebody\n";
+    std::cout<<statementList.size()<<"\n";
     for (int i=0;i<statementList.size();i++){
         statementList[i]->codeGeneration(outputFile);
     }
