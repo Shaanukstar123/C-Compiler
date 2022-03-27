@@ -11,9 +11,9 @@ void allFunctions::addFunction(baseAST* newFunction) {
         functionList.push_back(newFunction);
     }
 //Code generation function
-void allFunctions::codeGeneration(std::ofstream &outputFile) {
+void allFunctions::codeGeneration(std::ofstream &outputFile) const {
         //Update the context of all functions before starting
-        for(int i = 0; i < functionList.size(); i++) {
+        for (int i = 0; i < functionList.size(); i++) {
             functionList[i]->updateContext();
             functionList[i]->codeGeneration(outputFile);
         }
@@ -23,16 +23,19 @@ void allFunctions::codeGeneration(std::ofstream &outputFile) {
 //Functions
 //Function with no code ie int f();
 Function::Function(std::string returnType, std::string name) {
+    std::cout << name << std::endl;
     FuncName = name;
 }
 //Function with no parameter list
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements) {
+        std::cout << name << std::endl;
         node = function_e;
         statementList = multiStatements;
         FuncName = name;
     }
 //Function with parameters
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) {
+        std::cout << name << std::endl;
         baseAST* statementList = multiStatements;
         //Add context from parameters into function context
         paramList->updateContext(paramVars, paramTypes); //<- Update the arguments of the function

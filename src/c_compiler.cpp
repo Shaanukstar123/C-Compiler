@@ -15,23 +15,15 @@ int main(int argc, char **argv) {
   logger = new Log(arguments.level);
   logger->info("SOURCE_FILE = %s\n", arguments.source_file);
   logger->info("OUTPUT_FILE = %s\n", arguments.output_file);
-*/  if (argv[0] != "-S") {
-        exit(0);
-    }
-    const variableContext variables;
-    const variableTypeRegContext variableTypes;
-    const variableTypeRegContext variableReg;
-    FILE* c_source = fopen(argv[1], "r");
+*/  
 
-    std::ofstream machine_code(argv[3]);
-    const baseAST *ast = generateAST(c_source);
-    fclose(c_source);
-
-    ast->codeGeneration(machine_code, variables, variableTypes, variableReg);
+    std::ofstream machine_code(argv[4]);
+    const baseAST* ast = generateAST(argv[2]);
+    ast->codeGeneration(machine_code);
     machine_code.close();
 
     //std::cerr << std::endl;
     //ast->print(std::cerr, 0);
     //std::cerr << std::endl;
-  exit(0);
+    exit(0);
 }

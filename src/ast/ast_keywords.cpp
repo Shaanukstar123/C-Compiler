@@ -4,6 +4,6 @@
 Return::Return(baseAST* expression) {
     returnExpr = expression;
 }
-void Return::updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes) {
+void Return::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes) {
     returnExpr->updateContext(funcVariables, funcVariableTypes);
 }

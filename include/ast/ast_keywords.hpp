@@ -6,7 +6,7 @@ class Return : public baseAST {
     baseAST* returnExpr;
     public:
         Return(baseAST* expression);
-        void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes);
+        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes);
 };
 
 #endif

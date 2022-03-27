@@ -9,6 +9,6 @@ void NUMVAL::updateContext() {
 
 }
 
-void NUMVAL::codeGeneration(std::ofstream &outputFile){
+void NUMVAL::codeGeneration(std::ofstream &outputFile) const {
     outputFile<<"li "<<"$2,"<<value;
 }

@@ -8,7 +8,7 @@ class codeBody : public baseAST{
         std::vector<baseAST*> statementList;
         codeBody(baseAST* firstStatement);
         void addStatement(baseAST* statement);
-        void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes, variableTypeRegContext const funcVariablesReg);
+        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
 };
 
 
@@ -18,7 +18,7 @@ class varDeclare : public baseAST{
         baseAST* expression;
         varDeclare(std::string varName);
         varDeclare(std::string varName, baseAST* expression);
-        void updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes, variableTypeRegContext const funcVariablesReg);
+        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
 };
 
 class Assign : public baseAST {
@@ -26,7 +26,7 @@ class Assign : public baseAST {
         std::string varName;
         baseAST* varExpression;
         Assign(std::string varName, baseAST* varExpression);
-        void codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string regName);
+        void codeGeneration(std::ofstream &outputFile, variableContext &funcVariables, variableTypeRegContext &funcVariablesTypes, variableTypeRegContext &funcVariablesReg, std::string regName) const;
 };
 
 class functionCall : public baseAST {

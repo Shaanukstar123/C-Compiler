@@ -1,28 +1,31 @@
 %option noyywrap
-%option noinput 
-%option nounput
 %{
-
+#define YYDEBUG 1
 extern "C" int fileno(FILE *stream);
 #include "parser.tab.hpp"
 %}
 
 %%
 
-
-[0-9]+    {/* Numbers */ yylval.integer = std::stoi(yytext); return T_NUMVAL;}
-
-[_a-zA-Z][0-9_a-zA-Z]*            {  /* Variables */ std::string *text=new std::string(yytext);  yylval.string=text; return T_IDENTIFIER;}
+"int"	  	                        {/* Keywords */ return(T_INT); }
+"return"		                        { return(T_RETURN); }
 
 
-int		  	  {/* Keywords */ return(T_INT); }
-return		  { return(T_RETURN); }
+[_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */
+                                    yylval.string = new std::string(yytext); 
+                                    return T_IDENTIFIER;}
+[0-9]+                            {/* Numbers */
+                                    return T_NUMVAL;}
 
-[+]                                {/* operators*/ return yytext[0];}
+[ \t\r\n]                         { ; }
+
+.                                 {return yytext[0];}
+
 %%
+#include <stdlib.h>
 
-void yyerror (char const *s)
+void yyerror (char const* message)
 {
-  fprintf (stderr, "Flex Error: %s\n", s); /* s is the text that wasn't matched */
+  fprintf (stderr, "Flex Error: %s\n", message); /* s is the text that wasn't matched */
   exit(1);
 }

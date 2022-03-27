@@ -7,7 +7,7 @@ codeBody::codeBody(baseAST* firstStatement) {
 void codeBody::addStatement(baseAST* statement) {
     statementList.push_back(statement);
 }
-void codeBody::updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes, variableTypeRegContext const funcVariablesReg) {
+void codeBody::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
     for(int i = 0; i < statementList.size(); i++) {
         statementList[i]->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
     }
@@ -20,7 +20,7 @@ varDeclare::varDeclare(std::string varName, baseAST* expression) {
     varName = varName;
     expression = expression;
 }
-void varDeclare::updateContext(variableContext const funcVariables, variableTypeRegContext const funcVariableTypes, variableTypeRegContext const funcVariablesReg) {
+void varDeclare::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
     expression->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
 }
 
@@ -29,7 +29,7 @@ Assign::Assign(std::string varName, baseAST* varExpression) {
     varName = varName;
     varExpression = varExpression;
 }
-void Assign::codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string regName) {
+void Assign::codeGeneration(std::ofstream &outputFile, variableContext &funcVariables, variableTypeRegContext &funcVariablesTypes, variableTypeRegContext &funcVariablesReg, std::string regName) const {
     if(variableRegisters.find("varName") == variableRegisters.end()) {
         varExpression->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, regName);
     } else {
