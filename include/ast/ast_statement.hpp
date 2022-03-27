@@ -27,7 +27,7 @@ class Assign : public baseAST {
         std::string varName;
         baseAST* varExpression;
         Assign(std::string varName, baseAST* varExpression);
-        void codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string regName);
+        void codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string destReg);
 };
 
 class functionCall : public baseAST {

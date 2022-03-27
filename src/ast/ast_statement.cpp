@@ -44,13 +44,13 @@ void updateContext(){
 }
 void Assign::codeGeneration(std::ofstream &outputFile, const variableContext funcVariables, const variableTypeRegContext funcVariablesTypes, const variableTypeRegContext funcVariablesReg, std::string destReg) {
     if(variableRegisters.find(varName) == variableRegisters.end()) {
-        varExpression->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, regName);
+        varExpression->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, destReg);
     } else {
         std::cout << "Error variable " + varName + " not declared" << std::endl;
     }
     //funcVariables[varName]=(funcVariables.size()*4)+4; //FIX UP
     outputFile<<"li $2,"<<destReg<<std::endl;
-    outputFile<<"sw $2,"<<funcVariables[];
+    //outputFile<<"sw $2,"<<funcVariables[];
 }
 
 //A function call
