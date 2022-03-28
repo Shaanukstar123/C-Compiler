@@ -20,10 +20,10 @@ void allFunctions::generateCode(std::ofstream &outputFile) const {
 //Loads everything from stack, back to memory for each function
 
             outputFile<<"nop"<<std::endl;
-            outputFile<<"move $29,$30"<<std::endl;
-            outputFile<<"lw $31,4($29)"<<std::endl;
-            outputFile<<"lw $30,0($29)"<<std::endl;
-            outputFile<<"addiu $29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
+            outputFile<<"move $sp,$fp"<<std::endl;
+            outputFile<<"lw $31,4($sp)"<<std::endl;
+            outputFile<<"lw $fp,0($sp)"<<std::endl;
+            outputFile<<"addiu $sp,$sp,"<<nodeVariables.size()<<std::endl; //probably wrong
             outputFile<<"j $31"<<std::endl;
             outputFile<<"nop"<<std::endl;
 
@@ -61,10 +61,10 @@ void Function::updateContext() {
 void Function::generateCode(std::ofstream &outputFile) const  { //doesn't support params yet
     outputFile << ".globl " << FuncName << std::endl;
     outputFile<<FuncName<<":"<<std::endl;
-    outputFile<<"addiu $29,$29,-8"<<std::endl;
-    outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
-    outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
-    outputFile<<"move $30,$29" << std::endl;//stores
+    outputFile<<"addiu $sp,$sp,-8"<<std::endl;
+    outputFile<<"sw $31,4($sp)"<<std::endl; //Stores return address at the bottom of the stack
+    outputFile<<"sw $fp,0($sp)"<<std::endl; //Stores frame pointer on top of it
+    outputFile<<"move $30,$sp" << std::endl;//stores
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
     statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
