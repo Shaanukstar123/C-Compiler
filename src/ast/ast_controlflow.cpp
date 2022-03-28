@@ -25,3 +25,18 @@ void While::codeGeneration(std::ofstream &outputFile, variableContext const &nod
     outputFile<<"b "<<whileLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
 }
+//If
+If::If(int label, baseAST* ifExpr, baseAST* trueCond) {
+    ifLabel = "IF_" + std::to_string(label);
+    exitLabel = "EXITIF_" + std::to_string(label);
+    ifExpr = ifExpr;
+    trueCond = trueCond;
+}
+If::If(int label, baseAST* ifExpr, baseAST* trueCond, baseAST* falseCond) {
+    ifLabel = "IF_" + std::to_string(label);
+    elseLabel = "ELSE_" + std::to_string(label);
+    exitLabel = "EXITIF_" + std::to_string(label);
+    ifExpr = ifExpr;
+    trueCond = trueCond;
+    falseCond = falseCond;
+}

@@ -30,7 +30,7 @@ class FuncParamList : public baseAST{
     public:
         FuncParamList(baseAST* firstParam);
         void addParameter(baseAST* newParam);
-        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations);
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) override;
 };
 
 class Parameter : public baseAST{
@@ -39,8 +39,9 @@ class Parameter : public baseAST{
     std::string paramname;
     public:
         Parameter(std::string type, std::string name, int pointer);
-        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations);
+        void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) override;
 };
+
 
 
 #endif

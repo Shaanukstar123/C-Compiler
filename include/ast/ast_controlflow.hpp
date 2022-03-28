@@ -15,5 +15,16 @@ class While : public baseAST {
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };  
 
+class If : public baseAST {
+    public:
+        std::string ifLabel;
+        std::string elseLabel;
+        std::string exitLabel;
+        baseAST* ifExpr;
+        baseAST* trueCond;
+        baseAST* falseCond;
+        If(int label, baseAST* ifExpr, baseAST* trueCond);
+        If(int label, baseAST* ifExpr, baseAST* trueCond, baseAST* falseCond);
+};
 
 #endif
