@@ -8,8 +8,10 @@ extern "C" int fileno(FILE *stream);
 %%
 
 "int"	  	                        {/* Keywords */ return(T_INT); }
-"return"		                        { return(T_RETURN); }
+"return"		                      { return(T_RETURN);}
 "while"                           {return(T_WHILE);}
+"if"                              {return(T_IF);}
+"else"                           {return(T_ELSE);}
 
 
 [_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */

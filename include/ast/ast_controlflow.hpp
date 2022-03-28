@@ -11,5 +11,16 @@ class While : public baseAST {
         While(int label, baseAST* expr, baseAST* code);
 };
 
+class If : public baseAST {
+    public:
+        std::string ifLabel;
+        std::string elseLabel;
+        std::string exitLabel;
+        baseAST* ifExpr;
+        baseAST* trueCond;
+        baseAST* falseCond;
+        If(int label, baseAST* ifExpr, baseAST* trueCond);
+        If(int label, baseAST* ifExpr, baseAST* trueCond, baseAST* falseCond);
+};
 
 #endif

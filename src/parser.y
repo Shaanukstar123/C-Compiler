@@ -23,11 +23,11 @@
 //T_TYPE are keywords int, float, double, etc
 //T_IDENTIFIER IS name of function/variable etc
 
-%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE
+%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
-%type <ASTnode> loop
+%type <ASTnode> loop if
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL 
 
@@ -58,9 +58,14 @@ codeBody        : statement                                                     
                 ;
 
 statement       : declaration                                                       {$$ = $1;} //Declering a variable
+                | if                                                                
                 | T_IDENTIFIER '=' expression ';'                                   {$$ = new Assign(*$1, $3);} //Assigning to a variable
                 | keyword                                                           {$$ = $1;} //A keyword stateword ie return
                 | loop
+                ;
+
+if              : T_IF '(' expression ')' '{' codeBody '}'                          {$$ = new If(labelCount++, $3, $6);}
+                | T_IF '(' expression ')' '{' codeBody '}' T_ELSE '{' codeBody '}'  {$$ = new If(labelCount++, $3, $6, $10);}
                 ;
 
 loop            : T_WHILE '(' expression ')' '{' codeBody '}'                       {$$ = new While(labelCount++, $3, $6);}
@@ -77,7 +82,7 @@ keyword         : T_RETURN expression ';'                                       
 
 expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1);} 
                 | funcCall                                                          {$$ = $1;}
-                | operation
+                | operation                                                         {$$ = $1;}
                 ;
 
 //A function call
