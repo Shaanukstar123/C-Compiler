@@ -26,7 +26,7 @@
 %token T_NUMVAL T_INT T_RETURN T_IDENTIFIER
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody
-%type <ASTnode> statement keyword expression declaration
+%type <ASTnode> statement keyword expression declaration funcCall operation term unary
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL 
 
@@ -69,7 +69,29 @@ dataType        : T_INT                                                         
 
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
-expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1);}                 
+expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1);} 
+                | funcCall                                                          {$$ = $1;}
+                | operation
+                ;
+
+//A function call
+funcCall        : dataType T_IDENTIFIER '(' ')'                                     {$$ = new functionCall(*$1, *$2);}
+                | dataType T_IDENTIFIER '(' funcParamList ')'                       {$$ = new functionCall(*$1, *$2, $4);}
+                ; 
+
+//All arithmetic operations
+operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}
+                | term                                                              {$$ = $1;}
+                ;
+
+term            : unary                                                             {$$ = $1;}
+                | expression                                                        {$$ = $1;}
+                ;
+
+unary           : T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
+                | T_IDENTIFIER                                                      {$$ = new Variable(*$1);}
+                ;
+
 
 %%
 

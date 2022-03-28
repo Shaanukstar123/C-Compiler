@@ -53,8 +53,8 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
     }
 //Update function context and save them 
 void Function::updateContext() {
-        paramList->updateContext(paramVars, paramTypes);
-        statementList->updateContext(nodeVariables, nodeVariableTypes);
+        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+        statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
 
     }
 
@@ -68,7 +68,6 @@ void Function::generateCode(std::ofstream &outputFile) const  { //doesn't suppor
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
     statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
-
 }
 
 //FuncParamList
@@ -82,7 +81,7 @@ void FuncParamList::addParameter(baseAST* newParam) {
         newParam->updateContext(nodeVariables, nodeVariableTypes);
     }
 //Called by function to update its context
-void FuncParamList::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) {
+void FuncParamList::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
         functionVars.insert(nodeVariables.begin(), nodeVariables.end());
         functionVarTypes.insert(nodeVariableTypes.begin(), nodeVariableTypes.end());
  //Function params do not need to update their context to match the entire function
@@ -96,7 +95,7 @@ Parameter::Parameter(std::string type, std::string name, int pointer) {
         paramname = name;
     }
 //Passing in parameters creates variables so these must be added to function context
-void Parameter::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes) {
+void Parameter::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
         functionVars.insert(std::make_pair(paramname, NULL));
         functionVarTypes.insert(std::make_pair(paramname, paramtype));
     }

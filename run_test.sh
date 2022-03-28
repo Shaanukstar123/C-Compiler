@@ -23,6 +23,7 @@ fi
 
 make bin/c_compiler
 # Compile test program using bin/c_compiler
+echo "Compiler: "bin/c_compiler -S "compiler_tests/${TEST_FILE}".c -o "bin/${TEST}".s
 bin/c_compiler -S "compiler_tests/${TEST_FILE}".c -o "bin/${TEST}".s 2>/dev/null
 # Assemble generated assembly code via gcc
 mips-linux-gnu-gcc -mfp32 -o "bin/${TEST}".o -c "bin/${TEST}".s
