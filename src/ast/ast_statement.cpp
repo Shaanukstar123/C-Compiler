@@ -45,7 +45,13 @@ Assign::Assign(std::string varName, baseAST* varExpression) {
     
 //}
 void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
-    if(variableRegisters.find(varName) == variableRegisters.end()) {
+    bool foundVar = false;
+    for(int i = 0; i < funcVariables.size(); i++) {
+        if(funcVariables[i][0].compare(varName) == 0) {
+            foundVar = true;
+        }
+    }
+    if(foundVar) {
         varExpression->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, destReg);
     } else {
         std::cout << "Error variable " + varName + " not declared" << std::endl;

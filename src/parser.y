@@ -23,10 +23,11 @@
 //T_TYPE are keywords int, float, double, etc
 //T_IDENTIFIER IS name of function/variable etc
 
-%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER
+%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
+%type <ASTnode> loop
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL 
 
@@ -59,6 +60,11 @@ codeBody        : statement                                                     
 statement       : declaration                                                       {$$ = $1;} //Declering a variable
                 | T_IDENTIFIER '=' expression ';'                                   {$$ = new Assign(*$1, $3);} //Assigning to a variable
                 | keyword                                                           {$$ = $1;} //A keyword stateword ie return
+                | loop
+                ;
+
+loop            : T_WHILE '(' expression ')' '{' codeBody '}'                       {$$ = new While(labelCount++, $3, $6);}
+                | T_WHILE '(' expression ')'                                        {$$ = new While(labelCount++, $3);}
                 ;
 
 declaration     : dataType T_IDENTIFIER ';'                                         {$$ = new varDeclare(*$2);}
@@ -107,3 +113,5 @@ const baseAST* generateAST(std::string c_source) {
     yyparse();
     return programRoot;
 }
+
+int labelCount = 0;
