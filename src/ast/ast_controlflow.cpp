@@ -4,11 +4,24 @@
 While::While(int label, baseAST* expr) {
     //Create label for while
     whileLabel = "WHILE_" + std::to_string(label);
+    endWhileLabel ="$ENDWHILE_" + std::to_string(label);
     expr = expr;
 }
 While::While(int label, baseAST* expr, baseAST* body) {
     //Create label for while
-    whileLabel = "WHILE_" + std::to_string(label);
+    whileLabel = "$WHILE_" + std::to_string(label);
+    endWhileLabel ="$ENDWHILE_" + std::to_string(label);
     expr = expr;
     body = body;
+}
+
+void While::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
+    outputFile<<whileLabel<<":"<<std::endl;
+    outputFile<<"lw "<<"$2,"<<expr<<std::endl;
+    outputFile<<"nop"<<std::endl;
+    outputFile<<"beq "<<"$2,"<<"$0,"<<endWhileLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+    body->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
+    outputFile<<"b "<<whileLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
 }
