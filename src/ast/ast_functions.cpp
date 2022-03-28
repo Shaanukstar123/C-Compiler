@@ -48,14 +48,12 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
         std::cout << name << std::endl;
         baseAST* statementList = multiStatements;
         //Add context from parameters into function context
-        paramList->updateContext(paramVars, paramTypes); //<- Update the arguments of the function
+        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
+        std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
         FuncName = name;
     }
 //Update function context and save them 
 void Function::updateContext() {
-        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
-        //nodeVariables should now contain a list of param variables 
-        std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
         statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
         //nodeVariables should now contain a a list of param vars followed by local vars
 
@@ -70,7 +68,7 @@ void Function::generateCode(std::ofstream &outputFile) const  { //doesn't suppor
     outputFile<<"move $30,$29" << std::endl;//stores
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
-    statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    //statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
 }
 
 //FuncParamList
@@ -86,24 +84,28 @@ void FuncParamList::addParameter(baseAST* newParam) {
 }
 //Called by function to update its context
 void FuncParamList::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
-    for(int i = 0; i <= nodeVariables.size(); i++) {
-        functionVars[i] = nodeVariables[i];
+    for(int i = 0; i <= nodeVariables.size()-1; i++) {
+        std::cout << i <<"\n";
+        functionVars.push_back(nodeVariables[i]);
     }
     if(nodeVariables.size() > 4) {
         std::cout << "Param list larger than 4!\n";
     }
+    std::cout << "finished adding " << nodeVariables.size()-1 << " params\n";
 
 }
 
 //Parameter
 //Function parameters have variable name and type 
 Parameter::Parameter(std::string type, std::string name, int pointer) {
-    nodeVariables = {{name, NULL}};
+    nodeVariables = {{name, "0"}};
     isPointer = pointer;
     paramtype = type;
+    paramname = name;
 }
 //Passing in parameters creates variables so these must be added to function context
 void Parameter::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
     //Add parameter to function context
+    std::cout << "adding param " << paramname << std::endl;
     functionVars.push_back(nodeVariables[0]);
 }

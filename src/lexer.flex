@@ -21,8 +21,6 @@ extern "C" int fileno(FILE *stream);
 
 [ \t\r\n]                         { ; }
 
-\,                                 {return yytext[0];}
-
 .                                 {return yytext[0];}
 
 %%
