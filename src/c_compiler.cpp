@@ -16,10 +16,14 @@ int main(int argc, char **argv) {
   logger->info("SOURCE_FILE = %s\n", arguments.source_file);
   logger->info("OUTPUT_FILE = %s\n", arguments.output_file);
 */  
-
+    variableContext nodeVariables;
+    //A map of variable names and their types
+    variableTypeRegContext nodeVariableTypes;
+    //A map of variable names and the registers they will be allocated to
+    variableTypeRegContext variableRegisters;
     std::ofstream machine_code(argv[4]);
     const baseAST* ast = generateAST(argv[2]);
-    ast->codeGeneration(machine_code);
+    ast->generateCode(machine_code);
     machine_code.close();
 
     //std::cerr << std::endl;

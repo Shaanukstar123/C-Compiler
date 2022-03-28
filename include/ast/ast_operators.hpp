@@ -14,7 +14,7 @@ class addOperator : public baseAST {
     baseAST* rightChild;
     public:
         addOperator(baseAST* leftChild, baseAST* rightChild);
-        void codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string regName) const;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 #endif

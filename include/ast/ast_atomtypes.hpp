@@ -7,7 +7,7 @@ class NUMVAL : public baseAST {
     public:
         NUMVAL(int value);
         void updateContext();
-        void codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string regName) const;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string regName) const override;
 };
 
 #endif

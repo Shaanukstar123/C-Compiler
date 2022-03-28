@@ -15,6 +15,7 @@ extern "C" int fileno(FILE *stream);
                                     yylval.string = new std::string(yytext); 
                                     return T_IDENTIFIER;}
 [0-9]+                            {/* Numbers */
+                                    yylval.integer = strtod(yytext, 0);
                                     return T_NUMVAL;}
 
 [ \t\r\n]                         { ; }

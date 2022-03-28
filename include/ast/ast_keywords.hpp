@@ -7,7 +7,7 @@ class Return : public baseAST {
     public:
         Return(baseAST* expression);
         void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes);
-        void codeGeneration(std::ofstream &outputFile, variableContext &nodeVariables, variableTypeRegContext &nodeVariableTypes, variableTypeRegContext &variableRegisters, std::string destReg) const;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
         
 };
 

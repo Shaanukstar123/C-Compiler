@@ -11,11 +11,11 @@ void allFunctions::addFunction(baseAST* newFunction) {
         functionList.push_back(newFunction);
     }
 //Code generation function
-void allFunctions::codeGeneration(std::ofstream &outputFile) const {
+void allFunctions::generateCode(std::ofstream &outputFile) const {
         //Update the context of all functions before starting
         for (int i = 0; i < functionList.size(); i++) {
             functionList[i]->updateContext();
-            functionList[i]->codeGeneration(outputFile);
+            functionList[i]->generateCode(outputFile);
             // outputFile<<FunctionList->name;
 //Loads everything from stack, back to memory for each function
 
@@ -58,14 +58,16 @@ void Function::updateContext() {
 
     }
 
-void Function::codeGeneration(std::ofstream &outputFile)const{ //doesn't support params yet
-    outputFile<<FuncName<<"():"<<std::endl;
+void Function::generateCode(std::ofstream &outputFile) const  { //doesn't support params yet
+    outputFile << ".globl " << FuncName << std::endl;
+    outputFile<<FuncName<<":"<<std::endl;
     outputFile<<"addiu $29,$29,-8"<<std::endl;
     outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
     outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
     outputFile<<"move $30,$29" << std::endl;//stores
     std::cout<<"Function: "<<FuncName<<"\n";
-    statementList->codeGeneration(outputFile);
+    std::string destReg = "$2";
+    statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
 
 }
 

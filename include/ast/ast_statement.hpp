@@ -10,8 +10,7 @@ class codeBody : public baseAST{
         void addStatement(baseAST* statement);
         
         void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
-        void codeGeneration(std::ofstream &outputFile) const;
-
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 
@@ -29,7 +28,7 @@ class Assign : public baseAST {
         std::string varName;
         baseAST* varExpression;
         Assign(std::string varName, baseAST* varExpression);
-        void codeGeneration(std::ofstream &outputFile, variableContext &funcVariables, variableTypeRegContext &funcVariablesTypes, variableTypeRegContext &funcVariablesReg, std::string destReg) const;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 class functionCall : public baseAST {

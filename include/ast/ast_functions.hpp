@@ -8,7 +8,7 @@ class allFunctions : public baseAST {
         std::vector<baseAST*> functionList;
         allFunctions(baseAST* firstFunction);
         void addFunction(baseAST* newFunction);
-        void codeGeneration(std::ofstream &outputFile) const;
+        void generateCode(std::ofstream &outputFile) const override;
 };
 
 class Function : public baseAST{
@@ -23,7 +23,7 @@ class Function : public baseAST{
         Function(std::string returnType, std::string name, baseAST* multiStatements);
         Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList);
         void updateContext();
-        void codeGeneration(std::ofstream &outputFile)const;
+        void generateCode(std::ofstream &outputFile) const;
 };
 
 class FuncParamList : public baseAST{

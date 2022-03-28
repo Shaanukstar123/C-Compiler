@@ -33,4 +33,5 @@ clean:
 	-rm -f src/*.yy.cpp	
 	-rm -f bin/c_compiler 
 	-rm -f bin/*.s
+	-rm -f bin/*.bin
 .PHONY: clean 

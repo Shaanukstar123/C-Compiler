@@ -15,14 +15,14 @@ void codeBody::updateContext(variableContext &funcVariables, variableTypeRegCont
 }
 //Code Generation
 
-void codeBody::codeGeneration(std::ofstream &outputFile)const{
+void codeBody::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariableTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const{
     std::cout<<"Codebody\n";
-    std::cout<<statementList.size()<<"\n";
+    std::cout<<"number of statements: " << statementList.size()<<"\n";
     for (int i=0;i<statementList.size();i++){
-        statementList[i]->codeGeneration(outputFile);
+        statementList[i]->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$2");
     }
     
-    }
+}
 //Decleration with no expression
 varDeclare::varDeclare(std::string varName) {
     varName = varName;
@@ -44,7 +44,7 @@ Assign::Assign(std::string varName, baseAST* varExpression) {
     //COMPLETE 
     
 //}
-void Assign::codeGeneration(std::ofstream &outputFile, variableContext &funcVariables, variableTypeRegContext &funcVariablesTypes, variableTypeRegContext &funcVariablesReg, std::string destReg) const {
+void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
     if(variableRegisters.find(varName) == variableRegisters.end()) {
         varExpression->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, destReg);
     } else {
