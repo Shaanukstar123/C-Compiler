@@ -9,6 +9,7 @@ extern "C" int fileno(FILE *stream);
 
 "int"	  	                        {/* Keywords */ return(T_INT); }
 "return"		                        { return(T_RETURN); }
+"while"                           {return(T_WHILE);}
 
 
 [_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */
@@ -19,6 +20,8 @@ extern "C" int fileno(FILE *stream);
                                     return T_NUMVAL;}
 
 [ \t\r\n]                         { ; }
+
+\,                                 {return yytext[0];}
 
 .                                 {return yytext[0];}
 

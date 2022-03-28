@@ -14,7 +14,7 @@ void allFunctions::addFunction(baseAST* newFunction) {
 void allFunctions::generateCode(std::ofstream &outputFile) const {
         //Update the context of all functions before starting
         for (int i = 0; i < functionList.size(); i++) {
-            functionList[i]->updateContext();
+            //functionList[i]->updateContext();
             functionList[i]->generateCode(outputFile);
             // outputFile<<FunctionList->name;
 //Loads everything from stack, back to memory for each function
@@ -54,7 +54,10 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
 //Update function context and save them 
 void Function::updateContext() {
         paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+        //nodeVariables should now contain a list of param variables 
+        std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
         statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+        //nodeVariables should now contain a a list of param vars followed by local vars
 
     }
 
@@ -73,29 +76,34 @@ void Function::generateCode(std::ofstream &outputFile) const  { //doesn't suppor
 //FuncParamList
 //This class has all the updated variable context from the single parameters
 FuncParamList::FuncParamList(baseAST* firstParam) {
-        node = function_e;
-        this->addParameter(firstParam);
-    }
+    node = function_e;
+    this->addParameter(firstParam);
+}
 //Add parameters, and modify the node's local context as these are variables
 void FuncParamList::addParameter(baseAST* newParam) {
-        newParam->updateContext(nodeVariables, nodeVariableTypes);
-    }
+    //Every new parameter is basically a variable
+    newParam->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+}
 //Called by function to update its context
 void FuncParamList::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
-        functionVars.insert(nodeVariables.begin(), nodeVariables.end());
-        functionVarTypes.insert(nodeVariableTypes.begin(), nodeVariableTypes.end());
- //Function params do not need to update their context to match the entire function
+    for(int i = 0; i <= nodeVariables.size(); i++) {
+        functionVars[i] = nodeVariables[i];
     }
+    if(nodeVariables.size() > 4) {
+        std::cout << "Param list larger than 4!\n";
+    }
+
+}
 
 //Parameter
 //Function parameters have variable name and type 
 Parameter::Parameter(std::string type, std::string name, int pointer) {
-        isPointer = pointer;
-        paramtype = type;
-        paramname = name;
-    }
+    nodeVariables = {{name, NULL}};
+    isPointer = pointer;
+    paramtype = type;
+}
 //Passing in parameters creates variables so these must be added to function context
 void Parameter::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
-        functionVars.insert(std::make_pair(paramname, NULL));
-        functionVarTypes.insert(std::make_pair(paramname, paramtype));
-    }
+    //Add parameter to function context
+    functionVars.push_back(nodeVariables[0]);
+}
