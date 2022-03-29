@@ -27,4 +27,28 @@ class equivalenceOperator : public baseOP {
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
+class lessThan : public baseOP {
+    public:
+        lessThan(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class greaterThan : public baseOP {
+    public:
+        greaterThan(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class lessThanEqual : public baseOP {
+    public:
+        lessThanEqual(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class greaterThanEqual : public baseOP {
+    public:
+        greaterThanEqual(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
 #endif
