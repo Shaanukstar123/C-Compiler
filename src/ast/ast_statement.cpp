@@ -69,13 +69,17 @@ void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &fu
 //Function call
 functionCall::functionCall(std::string funcN) {
     funcName = funcN;
+    bool has_args = false;
 }
 functionCall::functionCall(std::string funcN, baseAST* paramLst) {
     funcName = funcN;
     paramList = paramLst;
+    bool has_args = true;
 }
 
 void functionCall::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
+    if(has_args==true){
+        paramList->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, destReg);}
     outputFile << "jal " << funcName << std::endl;
     outputFile << "nop" << std::endl; 
 }
@@ -91,4 +95,8 @@ void funcCallArgs::addArg(baseAST* newArg) {
 
 void funcCallArgs::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
     //Code generation needs to loop through the arguments and sequentally place them in argument registes from 4-7
+    for (int i =0;i<4;i++){
+        std::string reg= "$"+std::to_string(i+4);
+        arguments[i]->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, reg);
+    }
 }
