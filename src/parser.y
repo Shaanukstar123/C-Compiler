@@ -27,7 +27,7 @@
 %token T_EQUIVALENCE T_LEQ T_GEQ T_BAND T_BOR T_BXOR T_LAND T_LOR
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
-%type <ASTnode> statement keyword expression declaration funcCall operation term unary
+%type <ASTnode> statement keyword expression declaration funcCall operation term 
 %type <ASTnode> loop if argList comparison incrementation multdiv
 %type <ASTnode> bitwiseOR bitwiseAND bitwiseXOR logicalAND logicalOR 
 %type <string> dataType T_IDENTIFIER 
@@ -100,26 +100,26 @@ dataType        : T_INT                                                         
 //Keywords
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
-//Expressions
-expression      : expression T_BAND bitwiseOR                                       {$$ = new bitwiseAndOperator($1, $3);}
-                | bitwiseOR                                                         {$$ = $1;}
-                ;
-                
-//Bitwise operators (forcing precedence)
-bitwiseOR       : expression T_BOR bitwiseAND                                       {$$ = new bitwiseOrOperator($1, $3);}
-                | bitwiseAND                                                        {$$ = $1;}
+//Expressions (forcing precedence)
+expression      : bitwiseOR                                                         {$$ = $1;}
+                | expression T_BAND bitwiseOR                                       {$$ = new bitwiseAndOperator($1, $3);}
                 ;
 
-bitwiseAND      : expression T_BXOR bitwiseXOR                                      {$$ = new bitwiseXorOperator($1, $3);}
-                | bitwiseXOR                                                        {$$ = $1;}
+//Bitwise operators
+bitwiseOR       : bitwiseAND                                                        {$$ = $1;}
+                | bitwiseOR T_BOR bitwiseAND                                        {$$ = new bitwiseOrOperator($1, $3);}
                 ;
 
-bitwiseXOR      : expression T_LAND logicalAND                                      {$$ = new logicalAndOperator($1, $3);}           
-                | logicalAND                                                        {$$ = $1;}
+bitwiseAND      : bitwiseXOR                                                        {$$ = $1;}
+                | bitwiseAND T_BXOR bitwiseXOR                                      {$$ = new bitwiseXorOperator($1, $3);}
                 ;
 
-logicalAND      : expression T_LOR logicalOR                                        {$$ = new logicalOrOperator($1, $3);}
-                | logicalOR                                                         {$$ = $1;}
+bitwiseXOR      : logicalAND                                                        {$$ = $1;}
+                | bitwiseXOR T_LAND logicalAND                                      {$$ = new logicalAndOperator($1, $3);}           
+                ;
+
+logicalAND      : logicalOR                                                         {$$ = $1;}
+                | logicalAND T_LOR logicalOR                                        {$$ = new logicalOrOperator($1, $3);}
                 ;
 
 logicalOR       : term                                                              {$$ = $1;} 
