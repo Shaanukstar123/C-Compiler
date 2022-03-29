@@ -27,7 +27,7 @@
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
-%type <ASTnode> loop if argList comparison
+%type <ASTnode> loop if argList comparison incrementation
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL  
 
@@ -70,10 +70,10 @@ codeBody        : statement                                                     
                 ;
 
 statement       : declaration                                                       {$$ = $1;} //Declering a variable
-                | if                                                                
+                | if                                                                {$$ = $1;}
                 | T_IDENTIFIER '=' expression ';'                                   {$$ = new Assign(*$1, $3);} //Assigning to a variable
                 | keyword                                                           {$$ = $1;} //A keyword stateword ie return
-                | loop
+                | loop                                                              {$$ = $1;}
                 ;
 
 //If statement
@@ -85,6 +85,7 @@ if              : T_IF '(' expression ')' '{' codeBody '}'                      
 loop            : T_WHILE '(' expression ')' '{' codeBody '}'                       {$$ = new While(labelCount++, $3, $6);}
                 | T_WHILE '(' expression ')'                                        {$$ = new While(labelCount++, $3);}
                 | T_WHILE '(' expression ')' '{' '}'                                {$$ = new While(labelCount++, $3);}
+                | T_FOR '(' declaration ';' comparison ';' incrementation ')' '{' codeBody '}'    {$$ = new For(labelCount++, $3, $5, $7, $10);}  
                 ;
 
 //Variable declaration
@@ -100,6 +101,7 @@ keyword         : T_RETURN expression ';'                                       
 //Expressions
 expression      : term                                                              {$$ = $1;} 
                 | funcCall                                                          {$$ = $1;}
+                | incrementation                                                    {$$ = $1;}
                 | operation                                                         {$$ = $1;}
                 | comparison                                                        {$$ = $1;}
                 ;
@@ -112,6 +114,10 @@ funcCall        : T_IDENTIFIER '(' ')'                                          
 argList         : expression                                                        {$$ = new funcCallArgs($1);}                                      
                 | argList ',' expression                                            {$$->addArg($3);}                           
                 ;
+
+//Variable incrementation
+incrementation  : T_IDENTIFIER '+' '+'                                              {$$ = new increment(*$1);}
+
 
 //All arithmetic operations
 operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}

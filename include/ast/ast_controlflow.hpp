@@ -25,8 +25,21 @@ class If : public baseAST {
         bool hasElse = false;
         If(int label, baseAST* ifExp, baseAST* trueCondition);
         If(int label, baseAST* ifExp, baseAST* trueCondition, baseAST* falseCondition);
-        void updateConext();
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class For : public baseAST {
+    public:
+    std::string label1;
+    std::string label2;
+    std::string label3;
+    baseAST* varDecl;
+    baseAST* exitCond;
+    baseAST* loopUpdate;
+    baseAST* body;
+    For(int label, baseAST* var, baseAST* exit, baseAST* update, baseAST* code);
+    void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
+    void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 #endif

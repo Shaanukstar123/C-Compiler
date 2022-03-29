@@ -83,3 +83,13 @@ void greaterThanEqual::codeGeneration(std::ofstream &outputFile, variableContext
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
 }
+
+//Incrementation
+increment::increment(std::string var) {
+    varRef = var;
+}
+void increment::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "greater than equals operation\n";
+    //Retrieve variable and store in register 8?
+    //Now need to add one and store the variable again - maybe make an addition baseAST, pass in context and do codegen?
+}
