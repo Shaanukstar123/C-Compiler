@@ -11,7 +11,8 @@ extern "C" int fileno(FILE *stream);
 "return"		                      { return(T_RETURN);}
 "while"                           {return(T_WHILE);}
 "if"                              {return(T_IF);}
-"else"                           {return(T_ELSE);}
+"else"                            {return(T_ELSE);}
+"for"                             {return(T_FOR);}
 
 
 [_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */

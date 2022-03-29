@@ -29,7 +29,7 @@ varDeclare::varDeclare(std::string varName) {
 }
 varDeclare::varDeclare(std::string varName, baseAST* expression) {
     var = varName;
-    expression = expression;
+    expr = expression;
 }
 void varDeclare::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
     //varDeclare should terminate context
@@ -67,12 +67,12 @@ void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &fu
 
 //A function call
 //Function call
-functionCall::functionCall(std::string funcType, std::string funcName) {
-    funcName = funcName;
-    funcType = funcType;
+functionCall::functionCall(std::string funcT, std::string funcN) {
+    funcName = funcN;
+    funcType = funcT;
 }
-functionCall::functionCall(std::string funcType, std::string funcName, baseAST* paramList) {
-    funcName = funcName;
-    funcType = funcType;
-    paramList = paramList;
+functionCall::functionCall(std::string funcT, std::string funcN, baseAST* paramLst) {
+    funcName = funcN;
+    funcType = funcT;
+    paramList = paramLst;
 }

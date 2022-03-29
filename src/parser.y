@@ -23,7 +23,7 @@
 //T_TYPE are keywords int, float, double, etc
 //T_IDENTIFIER IS name of function/variable etc
 
-%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE
+%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary

@@ -55,9 +55,22 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
     }
 //Update function context and save them 
 void Function::updateContext() {
+        //Add variables into function context
         statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
-        //nodeVariables should now contain a a list of param vars followed by local vars
+        //nodeVariables should now contain a list local vars
+        //Add context from parameters into function context
         std::cout << "Function now has: " << nodeVariables.size() << " parameters and variables.\n";
+        //Allocate into stack
+        int varNum = nodeVariables.size();
+        for(int i = 0; i < nodeVariables.size(); i++) {
+            nodeVariables[i][1] = std::to_string((i*4)+8);
+        }
+        //nodeVariables should now contain a list local vars followed by params
+        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
+        for(int i = varNum; i < nodeVariables.size(); i++) {
+            nodeVariables[i][1] = std::to_string((i*4)+8);
+        }
+        std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
 
     }
 

@@ -35,7 +35,7 @@ class functionCall : public baseAST {
         std::string funcName;
         std::string funcType;
         baseAST* paramList;
-        functionCall(std::string funcType, std::string funcName);
-        functionCall(std::string funcType, std::string funcName, baseAST* paramList);
+        functionCall(std::string funcT, std::string funcN);
+        functionCall(std::string funcT, std::string funcN, baseAST* paramLst);
 };
 #endif
