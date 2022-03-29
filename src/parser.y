@@ -91,7 +91,7 @@ loop            : T_WHILE '(' expression ')' '{' codeBody '}'                   
 
 //Variable declaration
 declaration     : dataType T_IDENTIFIER ';'                                         {$$ = new varDeclare(*$2);}
-                | dataType T_IDENTIFIER '=' expression ';'                          {$$ = new varDeclare(*$2, $4);}
+                | dataType T_IDENTIFIER '=' expression ';'                          {$$ = new varDeclare(*$2, new Assign(*$2, $4));}
                 ;
 
 dataType        : T_INT                                                             {$$ = new std::string("int");}

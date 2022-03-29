@@ -15,11 +15,13 @@ class codeBody : public baseAST{
 
 class varDeclare : public baseAST{
     public:
+        bool hasExpr; 
         std::string var;
         baseAST* expr;
         varDeclare(std::string variablename);
         varDeclare(std::string variablename, baseAST* expression);
         void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 class Assign : public baseAST {

@@ -26,17 +26,23 @@ void codeBody::codeGeneration(std::ofstream &outputFile, variableContext const &
 //Decleration with no expression
 varDeclare::varDeclare(std::string varName) {
     var = varName;
+    hasExpr = false;
 }
 varDeclare::varDeclare(std::string varName, baseAST* expression) {
     var = varName;
     expr = expression;
+    hasExpr = true;
 }
 void varDeclare::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
     //varDeclare should terminate context
     funcVariables.push_back({var, "0"});
     std::cout << "found variable: " << var << std::endl;
 }
-
+void varDeclare::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariableTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const{
+    if(hasExpr==true) {
+        expr->codeGeneration(outputFile, funcVariables, funcVariableTypes, funcVariablesReg, "$2");
+    }
+}
 //A variable assignment
 Assign::Assign(std::string varName, baseAST* varExpression) {
     var = varName;
