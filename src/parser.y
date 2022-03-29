@@ -109,8 +109,8 @@ funcCall        : T_IDENTIFIER '(' ')'                                          
                 | T_IDENTIFIER '(' argList ')'                                      {$$ = new functionCall(*$1, $3);}
                 ; 
 
-argList         : expression                                                              {$$ = new funcCallArgs($1);}                                      
-                | argList ',' expression                                                  {$$->addArg($3);}                           
+argList         : expression                                                        {$$ = new funcCallArgs($1);}                                      
+                | argList ',' expression                                            {$$->addArg($3);}                           
                 ;
 
 //All arithmetic operations
@@ -120,6 +120,10 @@ operation       : operation '+' term                                            
                 ;
 
 comparison      : comparison '=' '=' term                                           {$$ = new equivalenceOperator($1, $4);}
+                | comparison '<' term                                               {$$ = new greaterThan($1, $3);}
+                | comparison '>' term                                               {$$ = new lessThan($1, $3);}
+                | comparison '<' '=' term                                           {$$ = new lessThanEqual($1, $4);}
+                | comparison '>' '=' term                                           {$$ = new greaterThanEqual($1, $4);}
                 | term                                                              {$$ = $1;}
                 ;
 

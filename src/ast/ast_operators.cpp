@@ -35,3 +35,51 @@ void equivalenceOperator::codeGeneration(std::ofstream &outputFile, variableCont
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
 }
+
+//Less than
+lessThan::lessThan(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void lessThan::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "less than operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //outputFile<<"sub $2,$8,$9"<<std::endl;
+}
+
+//Greater than
+greaterThan::greaterThan(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void greaterThan::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "greater than operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //outputFile<<"sub $2,$8,$9"<<std::endl;
+}
+
+//lessThanEqual
+lessThanEqual::lessThanEqual(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void lessThanEqual::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "less than equals operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //outputFile<<"sub $2,$8,$9"<<std::endl;
+}
+
+//GreaterThanEqual
+greaterThanEqual::greaterThanEqual(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void greaterThanEqual::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "greather than equals operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //outputFile<<"sub $2,$8,$9"<<std::endl;
+}
