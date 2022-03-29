@@ -123,19 +123,20 @@ incrementation  : T_IDENTIFIER T_INCREMENT                                      
 //All arithmetic operations
 operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}
                 | operation '-' term                                                {$$ = new subOperator($1, $3);}
-                | term                                                              {$$ = $1;}
+                | term                                                              {$$ = $1;}                                            
                 ;
 
-comparison      : comparison T_EQUIVALENCE term                                           {$$ = new equivalenceOperator($1, $3,labelCount++);}
+comparison      : comparison T_EQUIVALENCE term                                     {$$ = new equivalenceOperator($1, $3,labelCount++);}
                 | comparison '>' term                                               {$$ = new greaterThan($1, $3,labelCount++);}
                 | comparison '<' term                                               {$$ = new lessThan($1, $3,labelCount++);}
-                | comparison T_LEQ term                                           {$$ = new lessThanEqual($1, $3,labelCount++);}
-                | comparison T_GEQ term                                           {$$ = new greaterThanEqual($1, $3,labelCount++);}
+                | comparison T_LEQ term                                             {$$ = new lessThanEqual($1, $3,labelCount++);}
+                | comparison T_GEQ term                                             {$$ = new greaterThanEqual($1, $3,labelCount++);}
                 | term                                                              {$$ = $1;}
                 ;
 
 //Variables and constants
-term            : T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
+term            : funcCall                                                          {$$ = $1;}
+                | T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
                 | T_IDENTIFIER                                                      {$$ = new Variable(*$1);}
                 ;
 
