@@ -22,8 +22,9 @@ class If : public baseAST {
         baseAST* ifExpr;
         baseAST* trueCond;
         baseAST* falseCond;
-        If(int label, baseAST* ifExpr, baseAST* trueCondition);
-        If(int label, baseAST* ifExpr, baseAST* trueCondition, baseAST* falseCondition);
+        bool hasElse = false;
+        If(int label, baseAST* ifExp, baseAST* trueCondition);
+        If(int label, baseAST* ifExp, baseAST* trueCondition, baseAST* falseCondition);
         void updateConext();
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };

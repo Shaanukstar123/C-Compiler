@@ -19,6 +19,7 @@ While::While(int label, baseAST* expr, baseAST* body) {
 }
 
 void While::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
+    std::cout << "while" << std::endl;
     outputFile<<whileLabel<<":"<<std::endl;
     outputFile<<"lw "<<"$2,"<<expr<<std::endl;
     outputFile<<"nop"<<std::endl;
@@ -31,32 +32,40 @@ void While::codeGeneration(std::ofstream &outputFile, variableContext const &nod
     outputFile<<endWhileLabel<<":"<<std::endl;
 }
 //If
-If::If(int label, baseAST* ifExpr, baseAST* trueCondition) {
+If::If(int label, baseAST* ifExp, baseAST* trueCondition) {
     ifLabel = "$IF_" + std::to_string(label);
     exitLabel = "$EXITIF_" + std::to_string(label);
-    ifExpr = ifExpr;
+    ifExpr = ifExp;
     trueCond = trueCondition;
 }
-If::If(int label, baseAST* ifExpr, baseAST* trueCondition, baseAST* falseCondition) {
+If::If(int label, baseAST* ifExp, baseAST* trueCondition, baseAST* falseCondition) {
     ifLabel = "$IF_" + std::to_string(label);
     elseLabel = "$ELSE_" + std::to_string(label);
     exitLabel = "$EXITIF_" + std::to_string(label);
-    ifExpr = ifExpr;
+    ifExpr = ifExp;
     trueCond = trueCondition;
     falseCond = falseCondition;
+    hasElse = true;
 }
 //Codegen
 void If::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
-    outputFile<<"lw "<<"$2,"<<ifExpr<<std::endl;
-    outputFile<<"nop"<<std::endl;
-    outputFile<<"beq "<<"$2,"<<"$0,"<<elseLabel<<std::endl;
+    std::cout << "If" << std::endl;    
+    //Evaluate expression
+    ifExpr->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,"$2");
+    if(hasElse == true) {
+        outputFile<<"beq "<<"$2,"<<"$0,"<<elseLabel<<std::endl;
+    } else {
+        outputFile<<"beq "<<"$2,"<<"$0,"<<exitLabel<<std::endl;
+    }
     outputFile<<"nop"<<std::endl;
     trueCond->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
     outputFile<<"b "<<exitLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
-    outputFile<<elseLabel<<":"<<std::endl;
-    falseCond->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
-    outputFile<<"beq "<<"$0,$0,"<<exitLabel;
+    if(hasElse == true) {
+        outputFile<<elseLabel<<":"<<std::endl;
+        falseCond->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
+        outputFile<<"beq "<<"$0,$0,"<<exitLabel <<std::endl;
+    }
     outputFile<<exitLabel<<":"<<std::endl;
     
     //trueCond->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
