@@ -24,7 +24,7 @@
 //T_IDENTIFIER IS name of function/variable etc
 
 %token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR T_INCREMENT
-%token T_EQUIVALENCE T_LEQ T_GEQ
+%token T_EQUIVALENCE T_LEQ T_GEQ T_BAND T_BOR T_BXOR T_LAND T_LOR
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
@@ -100,8 +100,28 @@ dataType        : T_INT                                                         
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
 //Expressions
-expression      : term                                                              {$$ = $1;} 
-                | funcCall                                                          {$$ = $1;}
+expression      : expression T_BAND bitwiseOR                                       {}
+                | bitwiseOR                                                         {$$ = $1;}
+                ;
+                
+//Bitwise operators (forcing precedence)
+bitwiseOR       : expression T_BOR bitwiseAND                                       {}
+                | bitwiseAND                                                        {$$ = $1;}
+                ;
+
+bitwiseAND      : expression T_BXOR bitwiseXOR                                      {}
+                | bitwiseXOR                                                        {$$ = $1;}
+                ;
+
+bitwiseXOR      : expression T_LAND logicalAND                                      {}           
+                | logicalAND                                                        {$$ = $1;}
+                ;
+
+logicalAND      : expression T_LOR logicalOR                                        {}
+                | logicalOR                                                         {$$ = $1;}
+                ;
+
+logicalOR       : term                                                              {$$ = $1;} 
                 | incrementation                                                    {$$ = $1;}
                 | operation                                                         {$$ = $1;}
                 | comparison                                                        {$$ = $1;}
@@ -143,6 +163,7 @@ comparison      : comparison T_EQUIVALENCE term                                 
 term            : funcCall                                                          {$$ = $1;}
                 | T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
                 | T_IDENTIFIER                                                      {$$ = new Variable(*$1);}
+                | '(' expression ')'                                                {$$ = $2;}
                 ;
 
 
