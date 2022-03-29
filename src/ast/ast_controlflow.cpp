@@ -72,3 +72,19 @@ void If::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVa
     //outputFile<<
 
 }
+
+//For
+For::For(int label, baseAST* var, baseAST* exit, baseAST* update, baseAST* code){
+    label1 = "$1_" + std::to_string(label);
+    label2 = "$2_" + std::to_string(label);
+    label3 = "$3_" + std::to_string(label);
+}
+
+void For::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
+    //For loop needs to store the variable it initalises into the stack
+    //Maybe create new variable ast for it?
+}
+
+void For::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    //For loop codegen
+}
