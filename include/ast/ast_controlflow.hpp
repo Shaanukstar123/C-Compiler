@@ -8,6 +8,7 @@ class While : public baseAST {
         std::string endWhileLabel;
         baseAST* expr;
         baseAST* body;
+        bool has_body;
         While(int label, baseAST* expr);
         While(int label, baseAST* expr, baseAST* body);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;

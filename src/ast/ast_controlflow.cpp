@@ -1,18 +1,21 @@
 #include "etc.hpp"
 
-//While
+//While without codebody
 While::While(int label, baseAST* expr) {
-    //Create label for while
-    whileLabel = "WHILE_" + std::to_string(label);
+    //Creates labels for while
+    whileLabel = "$WHILE_" + std::to_string(label);
     endWhileLabel ="$ENDWHILE_" + std::to_string(label);
     expr = expr;
+    has_body = false; 
 }
+//While with codebody
 While::While(int label, baseAST* expr, baseAST* body) {
-    //Create label for while
+    //Creates labels for while
     whileLabel = "$WHILE_" + std::to_string(label);
     endWhileLabel ="$ENDWHILE_" + std::to_string(label);
     expr = expr;
     body = body;
+    has_body = true;
 }
 
 void While::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
@@ -21,9 +24,11 @@ void While::codeGeneration(std::ofstream &outputFile, variableContext const &nod
     outputFile<<"nop"<<std::endl;
     outputFile<<"beq "<<"$2,"<<"$0,"<<endWhileLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
-    body->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);
+    if (has_body==true){
+        body->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);}
     outputFile<<"b "<<whileLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
+    outputFile<<endWhileLabel<<":"<<std::endl;
 }
 //If
 If::If(int label, baseAST* ifExpr, baseAST* trueCond) {

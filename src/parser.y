@@ -70,6 +70,7 @@ if              : T_IF '(' expression ')' '{' codeBody '}'                      
 
 loop            : T_WHILE '(' expression ')' '{' codeBody '}'                       {$$ = new While(labelCount++, $3, $6);}
                 | T_WHILE '(' expression ')'                                        {$$ = new While(labelCount++, $3);}
+                | T_WHILE '(' expression ')' '{' '}'                                {$$ = new While(labelCount++, $3);}
                 ;
 
 declaration     : dataType T_IDENTIFIER ';'                                         {$$ = new varDeclare(*$2);}
