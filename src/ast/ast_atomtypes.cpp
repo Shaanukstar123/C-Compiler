@@ -2,7 +2,6 @@
 
 //Terminal leaf containing a number
 NUMVAL::NUMVAL(int value) {
-    std::cout << "created value\n";
     value = value;
 }
 
@@ -13,7 +12,6 @@ void NUMVAL::codeGeneration(std::ofstream &outputFile, variableContext const &no
 
 //Terminal containing variable
 Variable::Variable(std::string varName) {
-    std::cout << "created variable " << varName << "\n";
         varName = varName;
 }
 
