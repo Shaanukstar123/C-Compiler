@@ -16,3 +16,4 @@ void baseAST::updateContext(variableContext &nodeVariables, variableTypeRegConte
 void baseAST::addFunction(baseAST* newFunction) {std::cout << "USING BASEAST addfunc\n";}
 void baseAST::addParameter(baseAST* newParam) {std::cout << "USING BASEAST addparam\n";}
 void baseAST::addStatement(baseAST* statement) {std::cout << "USING BASEAST addstate\n";}
+void baseAST::addArg(baseAST* statement) {std::cout << "USING BASEAST addarg\n";}

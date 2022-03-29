@@ -27,7 +27,7 @@
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
-%type <ASTnode> loop if
+%type <ASTnode> loop if argList 
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL  
 
@@ -48,6 +48,7 @@ defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                
                 ;
 
 forwardDecl     : dataType T_IDENTIFIER '(' ')' ';'                                 {$$ = new forwardDeclaration(*$2);}
+                | dataType T_IDENTIFIER '(' funcParamList ')' ';'                   {$$ = new forwardDeclaration(*$2);}
                 ;
 
 
@@ -94,8 +95,12 @@ expression      : term                                                          
 
 //A function call
 funcCall        : T_IDENTIFIER '(' ')'                                              {$$ = new functionCall(*$1);}
-                | T_IDENTIFIER '(' funcParamList ')'                                {$$ = new functionCall(*$1, $3);}
+                | T_IDENTIFIER '(' argList ')'                                      {$$ = new functionCall(*$1, $3);}
                 ; 
+
+argList         : term                                                              {$$ = new funcCallArgs($1);}                                      
+                | argList ',' term                                                  {$$->addArg($3);}                           
+                ;
 
 //All arithmetic operations
 operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}

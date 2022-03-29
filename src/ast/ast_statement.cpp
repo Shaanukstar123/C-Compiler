@@ -79,3 +79,16 @@ void functionCall::codeGeneration(std::ofstream &outputFile, variableContext con
     outputFile << "jal " << funcName << std::endl;
     outputFile << "nop" << std::endl; 
 }
+
+//Function argument list
+funcCallArgs::funcCallArgs(baseAST* firstArg) {
+    this->addArg(firstArg);
+}
+
+void funcCallArgs::addArg(baseAST* newArg) {
+    arguments.push_back(newArg);
+}
+
+void funcCallArgs::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
+    //Code generation needs to loop through the arguments and sequentally place them in argument registes from 4-7
+}

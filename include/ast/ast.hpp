@@ -45,6 +45,7 @@ class baseAST {
         virtual void addFunction(baseAST* newFunction);
         virtual void addParameter(baseAST* newParam);
         virtual void addStatement(baseAST* statement);
+        virtual void addArg(baseAST* statement);
 };
 
 #endif

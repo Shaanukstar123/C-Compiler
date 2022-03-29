@@ -39,4 +39,12 @@ class functionCall : public baseAST {
         functionCall(std::string funcN, baseAST* paramLst);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
+
+class funcCallArgs : public baseAST {
+    public:
+        std::vector<baseAST*> arguments; 
+        funcCallArgs(baseAST* firstArg);
+        void addArg(baseAST* newArg);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
 #endif
