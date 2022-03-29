@@ -23,7 +23,7 @@
 //T_TYPE are keywords int, float, double, etc
 //T_IDENTIFIER IS name of function/variable etc
 
-%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR
+%token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR T_INCREMENT
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
@@ -116,7 +116,7 @@ argList         : expression                                                    
                 ;
 
 //Variable incrementation
-incrementation  : T_IDENTIFIER '+' '+'                                              {$$ = new increment(*$1);}
+incrementation  : T_IDENTIFIER T_INCREMENT                                          {$$ = new increment(*$1);}
 
 
 //All arithmetic operations
