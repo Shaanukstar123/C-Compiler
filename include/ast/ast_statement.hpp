@@ -17,8 +17,8 @@ class varDeclare : public baseAST{
     public:
         std::string var;
         baseAST* expr;
-        varDeclare(std::string varName);
-        varDeclare(std::string varName, baseAST* expression);
+        varDeclare(std::string variablename);
+        varDeclare(std::string variablename, baseAST* expression);
         void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
 };
 
