@@ -24,7 +24,7 @@
 //T_IDENTIFIER IS name of function/variable etc
 
 %token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR T_INCREMENT
-%token T_EQUIVALENCE T_LEQ T_GEQ T_BAND T_BOR T_BXOR T_LAND T_LOR
+%token T_EQUIVALENCE T_LEQ T_GEQ T_BAND T_BOR T_BXOR T_LAND T_LOR T_FLOAT
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term 
@@ -96,6 +96,7 @@ declaration     : dataType T_IDENTIFIER ';'                                     
                 ;
 
 dataType        : T_INT                                                             {$$ = new std::string("int");}
+                | T_FLOAT                                                           {$$ = new std::string("float");}
 
 //Keywords
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
