@@ -5,7 +5,7 @@ While::While(int label, baseAST* expr) {
     //Creates labels for while
     whileLabel = "$WHILE_" + std::to_string(label);
     endWhileLabel ="$ENDWHILE_" + std::to_string(label);
-    expr = expr;
+    expression = expr;
     has_body = false; 
 }
 //While with codebody
@@ -13,20 +13,20 @@ While::While(int label, baseAST* expr, baseAST* body) {
     //Creates labels for while
     whileLabel = "$WHILE_" + std::to_string(label);
     endWhileLabel ="$ENDWHILE_" + std::to_string(label);
-    expr = expr;
-    body = body;
+    expression = expr;
+    bodyexpr = body;
     has_body = true;
 }
 
 void While::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
     std::cout << "while" << std::endl;
     outputFile<<whileLabel<<":"<<std::endl;
-    outputFile<<"lw "<<"$2,"<<expr<<std::endl;
+    expression->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,"$2");
     outputFile<<"nop"<<std::endl;
     outputFile<<"beq "<<"$2,"<<"$0,"<<endWhileLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
     if (has_body==true){
-        body->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);}
+        bodyexpr->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,destReg);}
     outputFile<<"b "<<whileLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
     outputFile<<endWhileLabel<<":"<<std::endl;

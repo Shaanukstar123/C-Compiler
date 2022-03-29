@@ -29,9 +29,10 @@ class Function : public baseAST{
         std::string FuncName;
         bool hasStatements = false;
         bool hasParams = true;
-        Function(std::string returnType, std::string name);
-        Function(std::string returnType, std::string name, baseAST* multiStatements);
-        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList);
+        std::string exitFuncLabel;
+        Function(std::string returnType, std::string name, int funcNum);
+        Function(std::string returnType, std::string name, baseAST* multiStatements, int funcNum);
+        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList, int funcNum);
         void updateContext();
         void generateCode(std::ofstream &outputFile) const;
 };

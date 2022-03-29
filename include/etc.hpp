@@ -17,6 +17,7 @@
 
 extern const baseAST* generateAST(std::string c_source);
 extern int labelCount;
+extern int funcCount;
 
 #endif
 

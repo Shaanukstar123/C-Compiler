@@ -32,23 +32,24 @@ void forwardDeclaration::codeGeneration(std::ofstream &outputFile, variableConte
 
 //Functions
 //Function with no code ie int f();
-Function::Function(std::string returnType, std::string name) {
+Function::Function(std::string returnType, std::string name, int funcNum) {
     hasStatements = false;
     hasParams = false;
     std::cout << name << std::endl;
     FuncName = name;
 }
 //Function with no parameter list
-Function::Function(std::string returnType, std::string name, baseAST* multiStatements) {
+Function::Function(std::string returnType, std::string name, baseAST* multiStatements, int funcNum) {
     hasStatements = true;
     hasParams = false;
+    exitFuncLabel = ":EXITFUNC_" + std::to_string(funcNum);
     std::cout << name << std::endl;
     node = function_e;
     statementList = multiStatements;
     FuncName = name;
 }
 //Function with parameters
-Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList) {
+Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList, int funcNum) {
         std::cout << name << std::endl;
         hasStatements = true;
         hasParams = true;
@@ -111,7 +112,6 @@ void Function::generateCode(std::ofstream &outputFile) const { //doesn't support
     outputFile<<"move $sp,$fp"<<std::endl;
     outputFile<<"lw $fp,4($sp)"<<std::endl; //restore old frame
     outputFile<<"lw $31,0($sp)"<<std::endl; //return addr
-    //outputFile<<"addiu $sp,$sp,"<<(nodeVariables.size()*4)+8<<std::endl; //probably wrong
     outputFile<<"j $31"<<std::endl;
     outputFile<<"nop"<<std::endl;
 }

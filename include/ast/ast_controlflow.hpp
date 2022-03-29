@@ -6,8 +6,8 @@ class While : public baseAST {
     public:
         std::string whileLabel;
         std::string endWhileLabel;
-        baseAST* expr;
-        baseAST* body;
+        baseAST* expression;
+        baseAST* bodyexpr;
         bool has_body;
         While(int label, baseAST* expr);
         While(int label, baseAST* expr, baseAST* body);

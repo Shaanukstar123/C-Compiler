@@ -42,8 +42,8 @@ multiFunction   : defFunction                                                   
                 | multiFunction defFunction                                         {$$->addFunction($2);} //Will add function to the main allFunction node
                 ;
 
-defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                    {$$ = new Function(*$1, *$2, $6);} //Function without params
-                | dataType T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'      {$$ = new Function(*$1, *$2, $7, $4);} //Function with params
+defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                    {$$ = new Function(*$1, *$2, $6, funcCount++);} //Function without params
+                | dataType T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'      {$$ = new Function(*$1, *$2, $7, $4, funcCount++);} //Function with params
                 | forwardDecl                                                       {$$ = $1;}
                 ;
 
@@ -123,3 +123,4 @@ const baseAST* generateAST(std::string c_source) {
 }
 
 int labelCount = 0;
+int funcCount = 0;
