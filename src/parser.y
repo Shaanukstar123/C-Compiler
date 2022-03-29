@@ -119,11 +119,11 @@ operation       : operation '+' term                                            
                 | term                                                              {$$ = $1;}
                 ;
 
-comparison      : comparison '=' '=' term                                           {$$ = new equivalenceOperator($1, $4);}
-                | comparison '<' term                                               {$$ = new greaterThan($1, $3);}
-                | comparison '>' term                                               {$$ = new lessThan($1, $3);}
-                | comparison '<' '=' term                                           {$$ = new lessThanEqual($1, $4);}
-                | comparison '>' '=' term                                           {$$ = new greaterThanEqual($1, $4);}
+comparison      : comparison '=' '=' term                                           {$$ = new equivalenceOperator($1, $4,labelCount++);}
+                | comparison '<' term                                               {$$ = new greaterThan($1, $3,labelCount++);}
+                | comparison '>' term                                               {$$ = new lessThan($1, $3,labelCount++);}
+                | comparison '<' '=' term                                           {$$ = new lessThanEqual($1, $4,labelCount++);}
+                | comparison '>' '=' term                                           {$$ = new greaterThanEqual($1, $4,labelCount++);}
                 | term                                                              {$$ = $1;}
                 ;
 

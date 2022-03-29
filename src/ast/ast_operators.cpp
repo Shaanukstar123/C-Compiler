@@ -25,7 +25,8 @@ void subOperator::codeGeneration(std::ofstream &outputFile, variableContext cons
 }
 
 //Comparisons
-equivalenceOperator::equivalenceOperator(baseAST* leftChild, baseAST* rightChild) {
+equivalenceOperator::equivalenceOperator(baseAST* leftChild, baseAST* rightChild, int label) {
+    branchLabel = "$Branch_" + std::to_string(label);
     leftOp = leftChild;
     rightOp = rightChild;
 }
@@ -37,7 +38,8 @@ void equivalenceOperator::codeGeneration(std::ofstream &outputFile, variableCont
 }
 
 //Less than
-lessThan::lessThan(baseAST* leftChild, baseAST* rightChild) {
+lessThan::lessThan(baseAST* leftChild, baseAST* rightChild, int label) {
+    branchLabel = "$Branch_" + std::to_string(label);
     leftOp = leftChild;
     rightOp = rightChild;
 }
@@ -49,7 +51,8 @@ void lessThan::codeGeneration(std::ofstream &outputFile, variableContext const &
 }
 
 //Greater than
-greaterThan::greaterThan(baseAST* leftChild, baseAST* rightChild) {
+greaterThan::greaterThan(baseAST* leftChild, baseAST* rightChild, int label) {
+    branchLabel = "$Branch_" + std::to_string(label);
     leftOp = leftChild;
     rightOp = rightChild;
 }
@@ -61,7 +64,8 @@ void greaterThan::codeGeneration(std::ofstream &outputFile, variableContext cons
 }
 
 //lessThanEqual
-lessThanEqual::lessThanEqual(baseAST* leftChild, baseAST* rightChild) {
+lessThanEqual::lessThanEqual(baseAST* leftChild, baseAST* rightChild, int label) {
+    branchLabel = "$Branch_" + std::to_string(label);
     leftOp = leftChild;
     rightOp = rightChild;
 }
@@ -73,13 +77,22 @@ void lessThanEqual::codeGeneration(std::ofstream &outputFile, variableContext co
 }
 
 //GreaterThanEqual
-greaterThanEqual::greaterThanEqual(baseAST* leftChild, baseAST* rightChild) {
+greaterThanEqual::greaterThanEqual(baseAST* leftChild, baseAST* rightChild, int label) {
+    branchLabel = "$Branch_" + std::to_string(label);
     leftOp = leftChild;
     rightOp = rightChild;
 }
 void greaterThanEqual::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::string branchEnd = branchLabel+"end";
     std::cout << "greather than equals operation\n";
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"bne $8,$9,"<<branchLabel<<std::endl;
+    outputFile<<"li "<<destReg<<",1"<<std::endl;
+    outputFile<<"b "<<branchEnd<<std::endl;
+    outputFile<<branchLabel<<":"<<std::endl;
+    outputFile<<"li "<<destReg<<",0"<<std::endl;
+    outputFile<<"b "<<branchEnd<<std::endl;
+    outputFile<<branchEnd<<":"<<std::endl;
     //outputFile<<"sub $2,$8,$9"<<std::endl;
 }
