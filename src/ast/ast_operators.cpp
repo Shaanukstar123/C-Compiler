@@ -24,6 +24,35 @@ void subOperator::codeGeneration(std::ofstream &outputFile, variableContext cons
     outputFile<<"sub $2,$8,$9"<<std::endl;
 }
 
+//Multiply
+multOperator::multOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void multOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "multi operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //Multiply
+    outputFile<<"mult $8,$9"<<std::endl;
+    outputFile <<"mflo $2" << std::endl;
+}
+
+//Divide
+divOperator::divOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void divOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "div operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    //Multiply
+    outputFile<<"div $8,$9"<<std::endl;
+    outputFile <<"mflo $2" << std::endl;
+}
+
+
 //Comparisons
 equivalenceOperator::equivalenceOperator(baseAST* leftChild, baseAST* rightChild, int label) {
     branchLabel = "$Branch_" + std::to_string(label);

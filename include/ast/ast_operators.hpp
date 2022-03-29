@@ -3,6 +3,7 @@
 
 #include "ast.hpp"
 
+//Arithmetic
 class baseOP : public baseAST {
     public:
         std::string branchLabel;
@@ -22,6 +23,19 @@ class subOperator : public baseOP {
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
+class multOperator : public baseOP {
+    public:
+        multOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class divOperator : public baseOP {
+    public:
+        divOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+//Comparison
 class equivalenceOperator : public baseOP {
     public:
         equivalenceOperator(baseAST* leftChild, baseAST* rightChild, int label);

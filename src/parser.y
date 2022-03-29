@@ -28,7 +28,7 @@
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
-%type <ASTnode> loop if argList comparison incrementation
+%type <ASTnode> loop if argList comparison incrementation multdiv
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL  
 
@@ -123,7 +123,12 @@ incrementation  : T_IDENTIFIER T_INCREMENT                                      
 //All arithmetic operations
 operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}
                 | operation '-' term                                                {$$ = new subOperator($1, $3);}
-                | term                                                              {$$ = $1;}                                            
+                | multdiv                                                           {$$ = $1;}                                            
+                ;
+
+multdiv         : multdiv '/' term                                                  {$$ = new divOperator($1, $3);}
+                | multdiv '*' term                                                  {$$ = new multOperator($1, $3);}
+                | term
                 ;
 
 comparison      : comparison T_EQUIVALENCE term                                     {$$ = new equivalenceOperator($1, $3,labelCount++);}
