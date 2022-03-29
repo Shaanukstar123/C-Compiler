@@ -17,6 +17,11 @@ extern "C" int fileno(FILE *stream);
 "=="                              {return(T_EQUIVALENCE);}
 "<="                              {return(T_LEQ);}
 ">="                              {return(T_GEQ);}
+"&"                               {return(T_BAND);}
+"|"                               {return{T_BOR);}
+"^"                               {return(T_BXOR);}
+"&&"                              {return(T_LAND);}
+"||"                              {return(T_LOR);}
 
 
 [_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */
