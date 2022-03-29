@@ -29,6 +29,7 @@
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
 %type <ASTnode> loop if argList comparison incrementation multdiv
+%type <ASTnode> bitwiseOR bitwiseAND bitwiseXOR logicalAND logicalOR 
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL  
 
@@ -100,24 +101,24 @@ dataType        : T_INT                                                         
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
 //Expressions
-expression      : expression T_BAND bitwiseOR                                       {}
+expression      : expression T_BAND bitwiseOR                                       {$$ = new bitwiseAndOperator($1, $3);}
                 | bitwiseOR                                                         {$$ = $1;}
                 ;
                 
 //Bitwise operators (forcing precedence)
-bitwiseOR       : expression T_BOR bitwiseAND                                       {}
+bitwiseOR       : expression T_BOR bitwiseAND                                       {$$ = new bitwiseOrOperator($1, $3);}
                 | bitwiseAND                                                        {$$ = $1;}
                 ;
 
-bitwiseAND      : expression T_BXOR bitwiseXOR                                      {}
+bitwiseAND      : expression T_BXOR bitwiseXOR                                      {$$ = new bitwiseXorOperator($1, $3);}
                 | bitwiseXOR                                                        {$$ = $1;}
                 ;
 
-bitwiseXOR      : expression T_LAND logicalAND                                      {}           
+bitwiseXOR      : expression T_LAND logicalAND                                      {$$ = new logicalAndOperator($1, $3);}           
                 | logicalAND                                                        {$$ = $1;}
                 ;
 
-logicalAND      : expression T_LOR logicalOR                                        {}
+logicalAND      : expression T_LOR logicalOR                                        {$$ = new logicalOrOperator($1, $3);}
                 | logicalOR                                                         {$$ = $1;}
                 ;
 
