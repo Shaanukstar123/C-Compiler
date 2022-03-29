@@ -181,7 +181,25 @@ void logicalOrOperator::codeGeneration(std::ofstream &outputFile, variableContex
     std::cout << "logical AND operation\n";
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
-    outputFile<<"OR $2,$8,$9"<<std::endl;
+
+    outputFile<<"bne $8,$0,"<<branchLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<"bne $9,$0,"<<branchLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<"move $2,$0"<<std::endl;
+    
+    outputFile<<"b "<<endLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<branchLabel<<":"<<std::endl;
+    outputFile<<"li $2,1"<<std::endl;
+
+    outputFile<<"b "<<endLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<endLabel<<":"<<std::endl;
 }
 
 //BITWISE OPERATORS
