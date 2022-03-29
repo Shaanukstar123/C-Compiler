@@ -20,6 +20,15 @@ void allFunctions::generateCode(std::ofstream &outputFile) const {
 
         }
     }
+//Forward decl
+forwardDeclaration::forwardDeclaration(std::string identifier) {
+    funName = identifier;
+}
+
+void forwardDeclaration::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
+
+}
+
 
 //Functions
 //Function with no code ie int f();

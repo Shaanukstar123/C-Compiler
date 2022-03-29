@@ -25,17 +25,18 @@
 
 %token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR
 
-%type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody
+%type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
 %type <ASTnode> loop if
 %type <string> dataType T_IDENTIFIER 
-%type <integer> T_NUMVAL 
+%type <integer> T_NUMVAL  
 
 
 %start program
 
 %%
 program         : multiFunction                                                     {programRoot = $1;}
+                ;
 
 multiFunction   : defFunction                                                       {$$ = new allFunctions($1);}
                 | multiFunction defFunction                                         {$$->addFunction($2);} //Will add function to the main allFunction node
@@ -43,7 +44,12 @@ multiFunction   : defFunction                                                   
 
 defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                    {$$ = new Function(*$1, *$2, $6);} //Function without params
                 | dataType T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'      {$$ = new Function(*$1, *$2, $7, $4);} //Function with params
+                | forwardDecl                                                       {$$ = $1;}
                 ;
+
+forwardDecl     : dataType T_IDENTIFIER '(' ')' ';'                                 {$$ = new forwardDeclaration(*$2);}
+                ;
+
 
 funcParamList   : funcParam                                                         {$$ = new FuncParamList($1);} //Add first func parameter
                 | funcParamList ',' funcParam                                       {$$->addParameter($3);}   //Add more func parameters
@@ -87,8 +93,8 @@ expression      : term                                                          
                 ;
 
 //A function call
-funcCall        : dataType T_IDENTIFIER '(' ')'                                     {$$ = new functionCall(*$1, *$2);}
-                | dataType T_IDENTIFIER '(' funcParamList ')'                       {$$ = new functionCall(*$1, *$2, $4);}
+funcCall        : T_IDENTIFIER '(' ')'                                              {$$ = new functionCall(*$1);}
+                | T_IDENTIFIER '(' funcParamList ')'                                {$$ = new functionCall(*$1, $3);}
                 ; 
 
 //All arithmetic operations

@@ -11,6 +11,14 @@ class allFunctions : public baseAST {
         void generateCode(std::ofstream &outputFile) const override;
 };
 
+class forwardDeclaration : public baseAST {
+    public:
+        std::string funName;
+        forwardDeclaration(std::string identifier);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+
 class Function : public baseAST{
     public:
         variableContext paramVars;

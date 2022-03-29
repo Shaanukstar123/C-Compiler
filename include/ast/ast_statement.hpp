@@ -35,7 +35,8 @@ class functionCall : public baseAST {
         std::string funcName;
         std::string funcType;
         baseAST* paramList;
-        functionCall(std::string funcT, std::string funcN);
-        functionCall(std::string funcT, std::string funcN, baseAST* paramLst);
+        functionCall(std::string funcN);
+        functionCall(std::string funcN, baseAST* paramLst);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 #endif

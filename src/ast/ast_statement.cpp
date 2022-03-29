@@ -49,31 +49,33 @@ Assign::Assign(std::string varName, baseAST* varExpression) {
 void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
     std::cout << "assignment\n"; 
     bool foundVar = false;
+    std::string varLocation;
     for(int i = 0; i < funcVariables.size(); i++) {
         std::cout << "var is present: " << funcVariables[i][0] << std::endl;
         if(funcVariables[i][0].compare(var) == 0) {
             foundVar = true;
+            varLocation = funcVariables[i][1];
         }
     }
-    if(foundVar) {
-        varExpr->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, destReg);
+    if(foundVar == true) {
+        varExpr->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, "$2");
     } else {
         std::cout << "Error variable " + var + " not declared" << std::endl;
     }
-    //funcVariables[varName]=(funcVariables.size()*4)+4; //FIX UP
-    varExpr->codeGeneration(outputFile, funcVariables, funcVariablesTypes, funcVariablesReg, "$9");
-    outputFile<<"mov $2,"<<destReg<<std::endl;
-    //outputFile<<"sw $2,"<<funcVariables[];
+    outputFile << "sw $2, " << varLocation << "($fp)" << std::endl; 
 }
 
 //A function call
 //Function call
-functionCall::functionCall(std::string funcT, std::string funcN) {
+functionCall::functionCall(std::string funcN) {
     funcName = funcN;
-    funcType = funcT;
 }
-functionCall::functionCall(std::string funcT, std::string funcN, baseAST* paramLst) {
+functionCall::functionCall(std::string funcN, baseAST* paramLst) {
     funcName = funcN;
-    funcType = funcT;
     paramList = paramLst;
+}
+
+void functionCall::codeGeneration(std::ofstream &outputFile, variableContext const &funcVariables, variableTypeRegContext const &funcVariablesTypes, variableTypeRegContext const &funcVariablesReg, std::string destReg) const {
+    outputFile << "jal " << funcName << std::endl;
+    outputFile << "nop" << std::endl; 
 }
