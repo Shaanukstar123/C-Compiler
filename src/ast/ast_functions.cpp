@@ -68,7 +68,7 @@ void Function::generateCode(std::ofstream &outputFile) const  { //doesn't suppor
     outputFile<<"move $30,$sp" << std::endl;//stores
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
-    //statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
 }
 
 //FuncParamList
