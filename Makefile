@@ -1,9 +1,8 @@
 CPPFLAGS += -std=c++17
 CPPFLAGS += -W -Wall -g -O0
-CPPFLAGS += -I include # search header files in `/include`
+CPPFLAGS += -I include
 CPPFLAGS += -Wno-unused-parameter
 
-#header_files := $(wildcard include/*.hpp) 
 ast_cpp := $(wildcard src/ast/*.cpp)
 ast_o   := $(ast_cpp:%.cpp=%.o)
 
