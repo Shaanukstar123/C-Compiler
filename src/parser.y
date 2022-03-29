@@ -27,7 +27,7 @@
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
-%type <ASTnode> loop if argList 
+%type <ASTnode> loop if argList comparison
 %type <string> dataType T_IDENTIFIER 
 %type <integer> T_NUMVAL  
 
@@ -35,23 +35,27 @@
 %start program
 
 %%
+//Main root
 program         : multiFunction                                                     {programRoot = $1;}
                 ;
 
+//All declared functions
 multiFunction   : defFunction                                                       {$$ = new allFunctions($1);}
                 | multiFunction defFunction                                         {$$->addFunction($2);} //Will add function to the main allFunction node
                 ;
 
+//A function definition
 defFunction     : dataType T_IDENTIFIER '(' ')' '{' codeBody '}'                    {$$ = new Function(*$1, *$2, $6, funcCount++);} //Function without params
                 | dataType T_IDENTIFIER '(' funcParamList ')' '{' codeBody '}'      {$$ = new Function(*$1, *$2, $7, $4, funcCount++);} //Function with params
                 | forwardDecl                                                       {$$ = $1;}
                 ;
 
+//Forward decleration
 forwardDecl     : dataType T_IDENTIFIER '(' ')' ';'                                 {$$ = new forwardDeclaration(*$2);}
                 | dataType T_IDENTIFIER '(' funcParamList ')' ';'                   {$$ = new forwardDeclaration(*$2);}
                 ;
 
-
+//Function parameters
 funcParamList   : funcParam                                                         {$$ = new FuncParamList($1);} //Add first func parameter
                 | funcParamList ',' funcParam                                       {$$->addParameter($3);}   //Add more func parameters
                 ;
@@ -60,6 +64,7 @@ funcParam       : dataType T_IDENTIFIER                                         
                 | dataType '*' T_IDENTIFIER                                         {$$ = new Parameter(*$1, *$3, 1);} //Add pointer parameter
                 ;
 
+//Several lines of code
 codeBody        : statement                                                         {$$ = new codeBody($1);} //One line of code in between braces
                 | codeBody statement                                                {$$->addStatement($2);} //Mulitple lines of code in between braces
                 ;
@@ -71,26 +76,32 @@ statement       : declaration                                                   
                 | loop
                 ;
 
+//If statement
 if              : T_IF '(' expression ')' '{' codeBody '}'                          {$$ = new If(labelCount++, $3, $6);}
                 | T_IF '(' expression ')' '{' codeBody '}' T_ELSE '{' codeBody '}'  {$$ = new If(labelCount++, $3, $6, $10);}
                 ;
 
+//Loops
 loop            : T_WHILE '(' expression ')' '{' codeBody '}'                       {$$ = new While(labelCount++, $3, $6);}
                 | T_WHILE '(' expression ')'                                        {$$ = new While(labelCount++, $3);}
                 | T_WHILE '(' expression ')' '{' '}'                                {$$ = new While(labelCount++, $3);}
                 ;
 
+//Variable declaration
 declaration     : dataType T_IDENTIFIER ';'                                         {$$ = new varDeclare(*$2);}
                 | dataType T_IDENTIFIER '=' expression ';'                          {$$ = new varDeclare(*$2, $4);}
                 ;
 
 dataType        : T_INT                                                             {$$ = new std::string("int");}
 
+//Keywords
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
+//Expressions
 expression      : term                                                              {$$ = $1;} 
                 | funcCall                                                          {$$ = $1;}
                 | operation                                                         {$$ = $1;}
+                | comparison                                                        {$$ = $1;}
                 ;
 
 //A function call
@@ -98,15 +109,21 @@ funcCall        : T_IDENTIFIER '(' ')'                                          
                 | T_IDENTIFIER '(' argList ')'                                      {$$ = new functionCall(*$1, $3);}
                 ; 
 
-argList         : term                                                              {$$ = new funcCallArgs($1);}                                      
-                | argList ',' term                                                  {$$->addArg($3);}                           
+argList         : expression                                                              {$$ = new funcCallArgs($1);}                                      
+                | argList ',' expression                                                  {$$->addArg($3);}                           
                 ;
 
 //All arithmetic operations
 operation       : operation '+' term                                                {$$ = new addOperator($1, $3);}
+                | operation '-' term                                                {$$ = new subOperator($1, $3);}
                 | term                                                              {$$ = $1;}
                 ;
 
+comparison      : comparison '=' '=' term                                           {$$ = new equivalenceOperator($1, $4);}
+                | term                                                              {$$ = $1;}
+                ;
+
+//Variables and constants
 term            : T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
                 | T_IDENTIFIER                                                      {$$ = new Variable(*$1);}
                 ;

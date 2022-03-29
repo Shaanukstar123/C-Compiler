@@ -5,15 +5,25 @@
 
 class baseOP : public baseAST {
     public:
-        baseAST* leftChild;
-        baseAST* rightChild;
-};
-
-class addOperator : public baseAST {
-    public:
         baseAST* leftOp;
         baseAST* rightOp;
+};
+
+class addOperator : public baseOP {
+    public:
         addOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class subOperator : public baseOP {
+    public:
+        subOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class equivalenceOperator : public baseOP {
+    public:
+        equivalenceOperator(baseAST* leftChild, baseAST* rightChild);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
