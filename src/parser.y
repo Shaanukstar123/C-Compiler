@@ -115,11 +115,11 @@ bitwiseAND      : bitwiseXOR                                                    
                 ;
 
 bitwiseXOR      : logicalAND                                                        {$$ = $1;}
-                | bitwiseXOR T_LAND logicalAND                                      {$$ = new logicalAndOperator($1, $3);}           
+                | bitwiseXOR T_LAND logicalAND                                      {$$ = new logicalAndOperator($1, $3,labelCount++);}           
                 ;
 
 logicalAND      : logicalOR                                                         {$$ = $1;}
-                | logicalAND T_LOR logicalOR                                        {$$ = new logicalOrOperator($1, $3);}
+                | logicalAND T_LOR logicalOR                                        {$$ = new logicalOrOperator($1, $3,labelCount++);}
                 ;
 
 logicalOR       : term                                                              {$$ = $1;} 

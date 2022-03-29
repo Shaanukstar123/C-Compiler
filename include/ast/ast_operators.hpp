@@ -78,14 +78,14 @@ class increment : public baseAST {
 //Logical AND
 class logicalAndOperator : public baseOP {
     public:
-        logicalAndOperator(baseAST* leftChild, baseAST* rightChild);
+        logicalAndOperator(baseAST* leftChild, baseAST* rightChild, int label);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 //Logical Or
 class logicalOrOperator : public baseOP {
     public:
-        logicalOrOperator(baseAST* leftChild, baseAST* rightChild);
+        logicalOrOperator(baseAST* leftChild, baseAST* rightChild, int label);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
