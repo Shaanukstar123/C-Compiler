@@ -8,8 +8,7 @@ class codeBody : public baseAST{
         std::vector<baseAST*> statementList;
         codeBody(baseAST* firstStatement);
         void addStatement(baseAST* statement);
-        
-        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
+        void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) override;
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 

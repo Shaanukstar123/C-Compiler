@@ -14,7 +14,7 @@ void allFunctions::addFunction(baseAST* newFunction) {
 void allFunctions::generateCode(std::ofstream &outputFile) const {
         //Update the context of all functions before starting
         for (int i = 0; i < functionList.size(); i++) {
-            //functionList[i]->updateContext();
+            functionList[i]->updateContext();
             functionList[i]->generateCode(outputFile);
             // outputFile<<FunctionList->name;
 //Loads everything from stack, back to memory for each function
@@ -56,10 +56,11 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
 void Function::updateContext() {
         statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
         //nodeVariables should now contain a a list of param vars followed by local vars
+        std::cout << "Function now has: " << nodeVariables.size() << " parameters and variables.\n";
 
     }
 
-void Function::generateCode(std::ofstream &outputFile) const  { //doesn't support params yet
+void Function::generateCode(std::ofstream &outputFile) const { //doesn't support params yet
     outputFile << ".globl " << FuncName << std::endl;
     outputFile<<FuncName<<":"<<std::endl;
     outputFile<<"addiu $29,$29,-8"<<std::endl;

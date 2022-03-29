@@ -32,7 +32,9 @@ varDeclare::varDeclare(std::string varName, baseAST* expression) {
     expression = expression;
 }
 void varDeclare::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg) {
-    expression->updateContext(funcVariables, funcVariableTypes, funcVariablesReg);
+    //varDeclare should terminate context
+    funcVariables.push_back({{varName, "0"}});
+    std::cout << "found variable: " << varName << std::endl;
 }
 
 //A variable assignment
