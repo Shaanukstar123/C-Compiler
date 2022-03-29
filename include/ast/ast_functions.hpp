@@ -33,6 +33,7 @@ class FuncParamList : public baseAST{
         FuncParamList(baseAST* firstParam);
         void addParameter(baseAST* newParam);
         void updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) override;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 class Parameter : public baseAST{

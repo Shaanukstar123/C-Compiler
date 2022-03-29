@@ -52,45 +52,57 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
     }
 //Update function context and save them 
 void Function::updateContext() {
-        //Add variables into function context
-        if(hasStatements == true) {
-            statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
-            //nodeVariables should now contain a list local vars
-            //Add context from parameters into function context
-            std::cout << "Function now has: " << nodeVariables.size() << " variables.\n";
-            //Allocate into stack
-            for(int i = 0; i < nodeVariables.size(); i++) {
-                nodeVariables[i][1] = std::to_string((i*4)+8);
-            }
+    //nodeVariables should now contain a list of params
+    if(hasParams == true) {
+        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
+        for(int i = 0; i < nodeVariables.size(); i++) {
+            //Record where parameters are in the stack
+            nodeVariables[i][1] = std::to_string(-((i*4)+4));
         }
-        int varNum = nodeVariables.size();
-        //nodeVariables should now contain a list local vars followed by params
-        if(hasParams == true) {
-            paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
-            for(int i = varNum; i < nodeVariables.size(); i++) {
-                nodeVariables[i][1] = std::to_string((i*4)+8);
-            }
-        }
-        std::cout << "Function now has: " << nodeVariables.size() << " variables and parameters.\n";
-
     }
+    std::cout << "Function now has: " << nodeVariables.size() << " params.\n";
+    //Number of params so far
+    int paramNum = nodeVariables.size();
+    //Add variables into function context
+    if(hasStatements == true) {
+        statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+        //nodeVariables should now contain a list of params followed local vars
+        //Add context from parameters into function context
+        //Allocate into stack
+        for(int i = paramNum; i < nodeVariables.size(); i++) {
+            nodeVariables[i][1] = std::to_string(-((i*4)+4));
+        }
+    }
+    for(int i = 0; i < nodeVariables.size(); i++) {
+        std::cout << "Variable " << nodeVariables[i][0] << " stored at " << nodeVariables[i][1] << "($fp)" << std::endl;
+    }
+    std::cout << "Function now has: " << nodeVariables.size() << " variables and parameters.\n";
+}
 
 void Function::generateCode(std::ofstream &outputFile) const { //doesn't support params yet
     outputFile << ".globl " << FuncName << std::endl;
     outputFile<<FuncName<<":"<<std::endl;
-    outputFile<<"addiu $29,$29,-8"<<std::endl;
-    outputFile<<"sw $31,4($29)"<<std::endl; //Stores return address at the bottom of the stack
-    outputFile<<"sw $30,0($29)"<<std::endl; //Stores frame pointer on top of it
-    outputFile<<"move $30,$29" << std::endl;//stores
+    //Allocate space on stack frame
+    outputFile<<"addiu $sp,$sp,-" << (8+(nodeVariables.size()*4))<<std::endl;
+    outputFile<<"sw $fp," << (4+(nodeVariables.size()*4)) << "($sp)"<<std::endl; //Stores return address at the bottom of the stack
+    outputFile<<"sw $31," << (nodeVariables.size()*4) << "($sp)"<<std::endl; //Stores frame pointer on return (at bottom)
+    outputFile<<"addiu $fp,$sp," << (nodeVariables.size()*4) << std::endl;//sets new frame pointer 
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
-    statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    //Load params into stack
+    if(hasParams == true) {
+        paramList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    }
+    //Execute codebody
+    if(hasStatements == true) {
+        statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    }
     //Loads everything from stack, back to memory for each function
     outputFile<<"nop"<<std::endl;
-    outputFile<<"move $29,$30"<<std::endl;
-    outputFile<<"lw $31,4($29)"<<std::endl;
-    outputFile<<"lw $30,0($29)"<<std::endl;
-    outputFile<<"addiu $29,$29,"<<nodeVariables.size()+8<<std::endl; //probably wrong
+    outputFile<<"move $sp,$fp"<<std::endl;
+    outputFile<<"lw $fp,4($sp)"<<std::endl; //restore old frame
+    outputFile<<"lw $31,0($sp)"<<std::endl; //return addr
+    //outputFile<<"addiu $sp,$sp,"<<(nodeVariables.size()*4)+8<<std::endl; //probably wrong
     outputFile<<"j $31"<<std::endl;
     outputFile<<"nop"<<std::endl;
 }
@@ -119,6 +131,12 @@ void FuncParamList::updateContext(variableContext &functionVars, variableTypeReg
 
 }
 
+void FuncParamList::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
+    //Laod params onto stack
+    for(int i = 0; (i < nodeVariables.size() && i < 4); i++) {
+        outputFile << "sw $" << (i+4) << "," << -((i*4)+4) << "($fp)" << std::endl; 
+    }
+}
 //Parameter
 //Function parameters have variable name and type 
 Parameter::Parameter(std::string type, std::string name, int pointer) {
