@@ -9,8 +9,7 @@ class While : public baseAST {
         baseAST* expr;
         baseAST* body;
         While(int label, baseAST* expr);
-        While(int label, baseAST* expr, baseAST* code);
-
+        While(int label, baseAST* expr, baseAST* body);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };  
 
