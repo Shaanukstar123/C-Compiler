@@ -15,7 +15,7 @@ class codeBody : public baseAST{
 
 class varDeclare : public baseAST{
     public:
-        std::string varName;
+        std::string var;
         baseAST* expression;
         varDeclare(std::string variablename);
         varDeclare(std::string variablename, baseAST* expression);
@@ -24,8 +24,8 @@ class varDeclare : public baseAST{
 
 class Assign : public baseAST {
     public:
-        std::string varName;
-        baseAST* varExpression;
+        std::string var;
+        baseAST* varExpr;
         Assign(std::string varName, baseAST* varExpression);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
