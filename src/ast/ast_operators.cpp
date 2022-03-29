@@ -134,3 +134,20 @@ void increment::codeGeneration(std::ofstream &outputFile, variableContext const 
     //Retrieve variable and store in register 8?
     //Now need to add one and store the variable again - maybe make an addition baseAST, pass in context and do codegen?
 }
+
+//LOGICAL OPERATORS
+
+//Logical AND
+
+logicalAndOperator::logicalAndOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void logicalAndOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "logical AND operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"AND $2,$8,$9"<<std::endl;
+}
+
+

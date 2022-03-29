@@ -73,4 +73,46 @@ class increment : public baseAST {
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
+// LOGICAL OPERATORS
+
+//Logical AND
+class logicalAndOperator : public baseOP {
+    public:
+        logicalAndOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+//Logical Or
+class logicalOrOperator : public baseOP {
+    public:
+        logicalOrOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class logicalXorOperator : public baseOP {
+    public:
+        logicalXorOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+//BITWISE OPERATORS
+
+class bitwiseAndOperator : public baseOP {
+    public:
+        bitwiseAndOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class bitwiseOrOperator : public baseOP {
+    public:
+        bitwiseOrOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
+class bitwiseXorOperator : public baseOP {
+    public:
+        bitwiseXorOperator(baseAST* leftChild, baseAST* rightChild);
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
+};
+
 #endif
