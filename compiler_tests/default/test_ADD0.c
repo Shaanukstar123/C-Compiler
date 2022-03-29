@@ -1,4 +1,4 @@
-int f(int a, int b)
+int f(int a, int c)
 {
-    return a+b;
+   return 1+2;
 }

@@ -95,11 +95,7 @@ operation       : operation '+' term                                            
                 | term                                                              {$$ = $1;}
                 ;
 
-term            : unary                                                             {$$ = $1;}
-                | expression                                                        {$$ = $1;}
-                ;
-
-unary           : T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
+term            : T_NUMVAL                                                          {$$ = new NUMVAL($1);}   
                 | T_IDENTIFIER                                                      {$$ = new Variable(*$1);}
                 ;
 

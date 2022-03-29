@@ -10,9 +10,9 @@ class baseOP : public baseAST {
 };
 
 class addOperator : public baseAST {
-    baseAST* leftChild;
-    baseAST* rightChild;
     public:
+        baseAST* leftChild;
+        baseAST* rightChild;
         addOperator(baseAST* leftChild, baseAST* rightChild);
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };

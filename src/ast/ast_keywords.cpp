@@ -4,8 +4,8 @@
 Return::Return(baseAST* expression) {
     returnExpr = expression;
 }
-void Return::updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes) {
-    returnExpr->updateContext(funcVariables, funcVariableTypes);
+void Return::updateContext(variableContext &functionVars, variableTypeRegContext &functionVarTypes, variableTypeRegContext &varLocations) {
+    returnExpr->updateContext(functionVars, functionVarTypes, varLocations);
 }
 
 void Return::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{

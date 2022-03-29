@@ -46,7 +46,7 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
 //Function with parameters
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) {
         std::cout << name << std::endl;
-        baseAST* statementList = multiStatements;
+        statementList = multiStatements;
         //Add context from parameters into function context
         paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
         std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
@@ -68,7 +68,7 @@ void Function::generateCode(std::ofstream &outputFile) const  { //doesn't suppor
     outputFile<<"move $30,$29" << std::endl;//stores
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
-    //statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
 }
 
 //FuncParamList

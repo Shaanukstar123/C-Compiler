@@ -3,17 +3,17 @@
 #include "ast.hpp"
 
 class NUMVAL : public baseAST {
-    int value;
     public:
+        int value;
         NUMVAL(int value);
-        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string regName) const override;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 class Variable : public baseAST {
-    std::string varName;
-    std::string stackRef;
     public:
+        std::string varName;
+        std::string stackRef;
         Variable(std::string varName);
-        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string regName) const override;
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 #endif
