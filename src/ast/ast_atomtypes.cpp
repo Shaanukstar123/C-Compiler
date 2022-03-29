@@ -1,8 +1,8 @@
 #include "etc.hpp"
 
 //Terminal leaf containing a number
-NUMVAL::NUMVAL(int value) {
-    value = value;
+NUMVAL::NUMVAL(int val) {
+    value = val;
 }
 
 void NUMVAL::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
@@ -11,8 +11,8 @@ void NUMVAL::codeGeneration(std::ofstream &outputFile, variableContext const &no
 }
 
 //Terminal containing variable
-Variable::Variable(std::string varName) {
-        varName = varName;
+Variable::Variable(std::string variableName) {
+        varName = variableName;
 }
 
 void Variable::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{

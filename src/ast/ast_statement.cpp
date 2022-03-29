@@ -24,10 +24,10 @@ void codeBody::codeGeneration(std::ofstream &outputFile, variableContext const &
     
 }
 //Decleration with no expression
-varDeclare::varDeclare(std::string varName) {
+varDeclare::varDeclare(std::string variablename) {
     varName = varName;
 }
-varDeclare::varDeclare(std::string varName, baseAST* expression) {
+varDeclare::varDeclare(std::string variablename, baseAST* expression) {
     varName = varName;
     expression = expression;
 }
@@ -59,7 +59,7 @@ void Assign::codeGeneration(std::ofstream &outputFile, variableContext const &fu
         std::cout << "Error variable " + varName + " not declared" << std::endl;
     }
     //funcVariables[varName]=(funcVariables.size()*4)+4; //FIX UP
-    outputFile<<"li $2,"<<destReg<<std::endl;
+    outputFile<<"li $2,"<<varExpression<<std::endl;
     //outputFile<<"sw $2,"<<funcVariables[];
 }
 

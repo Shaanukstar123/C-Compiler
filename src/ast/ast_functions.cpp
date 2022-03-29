@@ -44,10 +44,11 @@ Function::Function(std::string returnType, std::string name, baseAST* multiState
         FuncName = name;
     }
 //Function with parameters
-Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList) {
+Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList) {
         std::cout << name << std::endl;
         statementList = multiStatements;
         //Add context from parameters into function context
+        paramList = parameterList;
         paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
         std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
         FuncName = name;

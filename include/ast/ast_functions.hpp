@@ -21,7 +21,7 @@ class Function : public baseAST{
         std::string FuncName;
         Function(std::string returnType, std::string name);
         Function(std::string returnType, std::string name, baseAST* multiStatements);
-        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* paramList);
+        Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList);
         void updateContext();
         void generateCode(std::ofstream &outputFile) const;
 };

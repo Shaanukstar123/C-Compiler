@@ -31,19 +31,19 @@ void While::codeGeneration(std::ofstream &outputFile, variableContext const &nod
     outputFile<<endWhileLabel<<":"<<std::endl;
 }
 //If
-If::If(int label, baseAST* ifExpr, baseAST* trueCond) {
+If::If(int label, baseAST* ifExpr, baseAST* trueCondition) {
     ifLabel = "$IF_" + std::to_string(label);
     exitLabel = "$EXITIF_" + std::to_string(label);
     ifExpr = ifExpr;
-    trueCond = trueCond;
+    trueCond = trueCondition;
 }
-If::If(int label, baseAST* ifExpr, baseAST* trueCond, baseAST* falseCond) {
+If::If(int label, baseAST* ifExpr, baseAST* trueCondition, baseAST* falseCondition) {
     ifLabel = "$IF_" + std::to_string(label);
     elseLabel = "$ELSE_" + std::to_string(label);
     exitLabel = "$EXITIF_" + std::to_string(label);
     ifExpr = ifExpr;
-    trueCond = trueCond;
-    falseCond = falseCond;
+    trueCond = trueCondition;
+    falseCond = falseCondition;
 }
 //Codegen
 void If::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const {
