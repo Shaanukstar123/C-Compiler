@@ -81,7 +81,7 @@ dataType        : T_INT                                                         
 
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
 
-expression      : T_NUMVAL                                                          {$$ = new NUMVAL($1);} 
+expression      : term                                                              {$$ = $1;} 
                 | funcCall                                                          {$$ = $1;}
                 | operation                                                         {$$ = $1;}
                 ;
