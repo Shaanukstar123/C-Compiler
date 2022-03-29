@@ -139,28 +139,52 @@ void increment::codeGeneration(std::ofstream &outputFile, variableContext const 
 
 //Logical AND
 
-logicalAndOperator::logicalAndOperator(baseAST* leftChild, baseAST* rightChild) {
+logicalAndOperator::logicalAndOperator(baseAST* leftChild, baseAST* rightChild, int label) {
     leftOp = leftChild;
     rightOp = rightChild;
+    branchLabel = "$Branch_" + std::to_string(label);
+    
 }
 void logicalAndOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::string endLabel = "End" + branchLabel;
     std::cout << "logical AND operation\n";
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
-    outputFile<<"AND $2,$8,$9"<<std::endl;
+    
+    outputFile<<"beq $8,$0,"<<branchLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<"beq $9,$0,"<<branchLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<"li $2,1"<<std::endl;
+    outputFile<<"b "<<endLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<branchLabel<<":"<<std::endl;
+    outputFile<<"mov $2,$0"<<std::endl;
+
+    outputFile<<"b "<<endLabel<<std::endl;
+    outputFile<<"nop"<<std::endl;
+
+    outputFile<<endLabel<<":"<<std::endl;
+    
 }
 
-logicalOrOperator::logicalOrOperator(baseAST* leftChild, baseAST* rightChild) {
+logicalOrOperator::logicalOrOperator(baseAST* leftChild, baseAST* rightChild, int label) {
     leftOp = leftChild;
     rightOp = rightChild;
+    branchLabel = "$Branch_" + std::to_string(label);
 }
 void logicalOrOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::string endLabel = "End" + branchLabel;
     std::cout << "logical AND operation\n";
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     outputFile<<"OR $2,$8,$9"<<std::endl;
 }
 
+//BITWISE OPERATORS
 
 bitwiseAndOperator::bitwiseAndOperator(baseAST* leftChild, baseAST* rightChild) {
     leftOp = leftChild;
