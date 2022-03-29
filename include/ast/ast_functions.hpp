@@ -19,6 +19,8 @@ class Function : public baseAST{
         baseAST* statementList;
         baseAST* paramList;
         std::string FuncName;
+        bool hasStatements = false;
+        bool hasParams = true;
         Function(std::string returnType, std::string name);
         Function(std::string returnType, std::string name, baseAST* multiStatements);
         Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList);

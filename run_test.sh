@@ -34,8 +34,10 @@ echo "Linking:" mips-linux-gnu-gcc -mfp32 -static -o "bin/${TEST}".bin "bin/${TE
 # run executable on qemu-mips
 set +e 
 qemu-mips "bin/${TEST}".bin
+RESULT=${?}
+set -e
 echo qemu-mips "bin/${TEST}".bin
-if (( $? == 0 )); then
+if [[ ${RESULT} -eq 0 ]] ; then
   echo ✅ pass
   exit 0
 else

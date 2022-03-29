@@ -17,15 +17,6 @@ void allFunctions::generateCode(std::ofstream &outputFile) const {
             functionList[i]->updateContext();
             functionList[i]->generateCode(outputFile);
             // outputFile<<FunctionList->name;
-//Loads everything from stack, back to memory for each function
-
-            outputFile<<"nop"<<std::endl;
-            outputFile<<"move $29,$30"<<std::endl;
-            outputFile<<"lw $31,4($29)"<<std::endl;
-            outputFile<<"lw $30,0($29)"<<std::endl;
-            outputFile<<"addiu $29,$29,"<<nodeVariables.size()<<std::endl; //probably wrong
-            outputFile<<"j $31"<<std::endl;
-            outputFile<<"nop"<<std::endl;
 
         }
     }
@@ -33,44 +24,54 @@ void allFunctions::generateCode(std::ofstream &outputFile) const {
 //Functions
 //Function with no code ie int f();
 Function::Function(std::string returnType, std::string name) {
+    hasStatements = false;
+    hasParams = false;
     std::cout << name << std::endl;
     FuncName = name;
 }
 //Function with no parameter list
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements) {
-        std::cout << name << std::endl;
-        node = function_e;
-        statementList = multiStatements;
-        FuncName = name;
-    }
+    hasStatements = true;
+    hasParams = false;
+    std::cout << name << std::endl;
+    node = function_e;
+    statementList = multiStatements;
+    FuncName = name;
+}
 //Function with parameters
 Function::Function(std::string returnType, std::string name, baseAST* multiStatements, baseAST* parameterList) {
         std::cout << name << std::endl;
+        hasStatements = true;
+        hasParams = true;
         statementList = multiStatements;
         //Add context from parameters into function context
         paramList = parameterList;
-        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
+        //paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
         std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
         FuncName = name;
     }
 //Update function context and save them 
 void Function::updateContext() {
         //Add variables into function context
-        statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
-        //nodeVariables should now contain a list local vars
-        //Add context from parameters into function context
-        std::cout << "Function now has: " << nodeVariables.size() << " parameters and variables.\n";
-        //Allocate into stack
+        if(hasStatements == true) {
+            statementList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters);
+            //nodeVariables should now contain a list local vars
+            //Add context from parameters into function context
+            std::cout << "Function now has: " << nodeVariables.size() << " variables.\n";
+            //Allocate into stack
+            for(int i = 0; i < nodeVariables.size(); i++) {
+                nodeVariables[i][1] = std::to_string((i*4)+8);
+            }
+        }
         int varNum = nodeVariables.size();
-        for(int i = 0; i < nodeVariables.size(); i++) {
-            nodeVariables[i][1] = std::to_string((i*4)+8);
-        }
         //nodeVariables should now contain a list local vars followed by params
-        paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
-        for(int i = varNum; i < nodeVariables.size(); i++) {
-            nodeVariables[i][1] = std::to_string((i*4)+8);
+        if(hasParams == true) {
+            paramList->updateContext(nodeVariables, nodeVariableTypes, variableRegisters); //<- Update the arguments of the function
+            for(int i = varNum; i < nodeVariables.size(); i++) {
+                nodeVariables[i][1] = std::to_string((i*4)+8);
+            }
         }
-        std::cout << "Function now has: " << nodeVariables.size() << " parameters.\n";
+        std::cout << "Function now has: " << nodeVariables.size() << " variables and parameters.\n";
 
     }
 
@@ -84,6 +85,14 @@ void Function::generateCode(std::ofstream &outputFile) const { //doesn't support
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
     statementList->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, destReg);
+    //Loads everything from stack, back to memory for each function
+    outputFile<<"nop"<<std::endl;
+    outputFile<<"move $29,$30"<<std::endl;
+    outputFile<<"lw $31,4($29)"<<std::endl;
+    outputFile<<"lw $30,0($29)"<<std::endl;
+    outputFile<<"addiu $29,$29,"<<nodeVariables.size()+8<<std::endl; //probably wrong
+    outputFile<<"j $31"<<std::endl;
+    outputFile<<"nop"<<std::endl;
 }
 
 //FuncParamList
