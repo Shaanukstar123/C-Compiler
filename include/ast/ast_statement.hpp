@@ -16,7 +16,7 @@ class codeBody : public baseAST{
 class varDeclare : public baseAST{
     public:
         std::string var;
-        baseAST* expression;
+        baseAST* expr;
         varDeclare(std::string variablename);
         varDeclare(std::string variablename, baseAST* expression);
         void updateContext(variableContext &funcVariables, variableTypeRegContext &funcVariableTypes, variableTypeRegContext &funcVariablesReg);
