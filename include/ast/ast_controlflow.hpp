@@ -24,6 +24,8 @@ class If : public baseAST {
         baseAST* falseCond;
         If(int label, baseAST* ifExpr, baseAST* trueCond);
         If(int label, baseAST* ifExpr, baseAST* trueCond, baseAST* falseCond);
+        void updateConext();
+        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
 #endif
