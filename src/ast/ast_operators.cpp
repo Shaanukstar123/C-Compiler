@@ -162,7 +162,7 @@ void logicalAndOperator::codeGeneration(std::ofstream &outputFile, variableConte
     outputFile<<"nop"<<std::endl;
 
     outputFile<<branchLabel<<":"<<std::endl;
-    outputFile<<"mov $2,$0"<<std::endl;
+    outputFile<<"move $2,$0"<<std::endl;
 
     outputFile<<"b "<<endLabel<<std::endl;
     outputFile<<"nop"<<std::endl;
