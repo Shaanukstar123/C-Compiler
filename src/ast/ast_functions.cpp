@@ -93,10 +93,10 @@ void Function::generateCode(std::ofstream &outputFile) const { //doesn't support
     outputFile << ".globl " << FuncName << std::endl;
     outputFile<<FuncName<<":"<<std::endl;
     //Allocate space on stack frame
-    outputFile<<"addiu $sp,$sp,-" << (8+(nodeVariables.size()*4))<<std::endl;
-    outputFile<<"sw $fp," << (4+(nodeVariables.size()*4)) << "($sp)"<<std::endl; //Stores return address at the bottom of the stack
-    outputFile<<"sw $31," << (nodeVariables.size()*4) << "($sp)"<<std::endl; //Stores frame pointer on return (at bottom)
-    outputFile<<"addiu $fp,$sp," << (nodeVariables.size()*4) << std::endl;//sets new frame pointer 
+    outputFile<<"addiu $sp,$sp,-" << (32+(nodeVariables.size()*4))<<std::endl;
+    outputFile<<"sw $fp,"<<(24+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //Stores return address at the bottom of the stack
+    outputFile<<"sw $31,"<< (28+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //Stores frame pointer on return (at bottom)
+    outputFile<<"move $fp,$sp" << std::endl;//sets new frame pointer 
     std::cout<<"Function: "<<FuncName<<"\n";
     std::string destReg = "$2";
     //Load params into stack
@@ -110,8 +110,9 @@ void Function::generateCode(std::ofstream &outputFile) const { //doesn't support
     //Loads everything from stack, back to memory for each function
     outputFile<<"nop"<<std::endl;
     outputFile<<"move $sp,$fp"<<std::endl;
-    outputFile<<"lw $fp,4($sp)"<<std::endl; //restore old frame
-    outputFile<<"lw $31,0($sp)"<<std::endl; //return addr
+    outputFile<<"lw $fp,"<<(24+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //restore old frame
+    outputFile<<"lw $31,"<< (28+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //return addr
+    outputFile<<"addiu $sp,$sp," << (32+(nodeVariables.size()*4))<<std::endl;
     outputFile<<"j $31"<<std::endl;
     outputFile<<"nop"<<std::endl;
 }

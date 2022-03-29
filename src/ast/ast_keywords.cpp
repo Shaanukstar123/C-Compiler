@@ -13,8 +13,9 @@ void Return::codeGeneration(std::ofstream &outputFile, variableContext const &no
     returnExpr->codeGeneration(outputFile,nodeVariables,nodeVariableTypes,variableRegisters,"$2");
     outputFile<<"nop"<<std::endl;
     outputFile<<"move $sp,$fp"<<std::endl;
-    outputFile<<"lw $fp,4($sp)"<<std::endl; //restore old frame
-    outputFile<<"lw $31,0($sp)"<<std::endl; //return addr
+    outputFile<<"lw $fp,"<<(24+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //restore old frame
+    outputFile<<"lw $31,"<< (28+(nodeVariables.size()*4))<<"($sp)"<<std::endl; //return addr
+    outputFile<<"addiu $sp,$sp," << (32+(nodeVariables.size()*4))<<std::endl;
     outputFile<<"j $31"<<std::endl;
     outputFile<<"nop"<<std::endl;
 }
