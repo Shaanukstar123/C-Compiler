@@ -150,4 +150,47 @@ void logicalAndOperator::codeGeneration(std::ofstream &outputFile, variableConte
     outputFile<<"AND $2,$8,$9"<<std::endl;
 }
 
+logicalOrOperator::logicalOrOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void logicalOrOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "logical AND operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"OR $2,$8,$9"<<std::endl;
+}
 
+
+bitwiseAndOperator::bitwiseAndOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void bitwiseAndOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "logical AND operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"AND $2,$8,$9"<<std::endl;
+}
+
+bitwiseOrOperator::bitwiseOrOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void bitwiseOrOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "logical AND operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"OR $2,$8,$9"<<std::endl;
+}
+
+bitwiseXorOperator::bitwiseXorOperator(baseAST* leftChild, baseAST* rightChild) {
+    leftOp = leftChild;
+    rightOp = rightChild;
+}
+void bitwiseXorOperator::codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const{
+    std::cout << "logical AND operation\n";
+    leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
+    rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
+    outputFile<<"XOR $2,$8,$9"<<std::endl;
+}

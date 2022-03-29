@@ -89,12 +89,6 @@ class logicalOrOperator : public baseOP {
         void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
 };
 
-class logicalXorOperator : public baseOP {
-    public:
-        logicalXorOperator(baseAST* leftChild, baseAST* rightChild);
-        void codeGeneration(std::ofstream &outputFile, variableContext const &nodeVariables, variableTypeRegContext const &nodeVariableTypes, variableTypeRegContext const &variableRegisters, std::string destReg) const override;
-};
-
 //BITWISE OPERATORS
 
 class bitwiseAndOperator : public baseOP {
