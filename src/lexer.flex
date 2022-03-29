@@ -14,6 +14,9 @@ extern "C" int fileno(FILE *stream);
 "else"                            {return(T_ELSE);}
 "for"                             {return(T_FOR);}
 "++"                              {return(T_INCREMENT);}
+"=="                              {return(T_EQUIVALENCE);}
+"<="                              {return(T_LEQ);}
+">="                              {return(T_GEQ);}
 
 
 [_a-zA-Z][0-9_a-zA-Z]*            {/* Variables */

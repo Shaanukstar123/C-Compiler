@@ -24,6 +24,7 @@
 //T_IDENTIFIER IS name of function/variable etc
 
 %token T_NUMVAL T_INT T_RETURN T_IDENTIFIER T_WHILE T_IF T_ELSE T_FOR T_INCREMENT
+%token T_EQUIVALENCE T_LEQ T_GEQ
 
 %type <ASTnode> program multiFunction defFunction funcParamList funcParam codeBody forwardDecl
 %type <ASTnode> statement keyword expression declaration funcCall operation term unary
@@ -125,11 +126,11 @@ operation       : operation '+' term                                            
                 | term                                                              {$$ = $1;}
                 ;
 
-comparison      : comparison '=' '=' term                                           {$$ = new equivalenceOperator($1, $4,labelCount++);}
-                | comparison '<' term                                               {$$ = new greaterThan($1, $3,labelCount++);}
-                | comparison '>' term                                               {$$ = new lessThan($1, $3,labelCount++);}
-                | comparison '<' '=' term                                           {$$ = new lessThanEqual($1, $4,labelCount++);}
-                | comparison '>' '=' term                                           {$$ = new greaterThanEqual($1, $4,labelCount++);}
+comparison      : comparison T_EQUIVALENCE term                                           {$$ = new equivalenceOperator($1, $3,labelCount++);}
+                | comparison '>' term                                               {$$ = new greaterThan($1, $3,labelCount++);}
+                | comparison '<' term                                               {$$ = new lessThan($1, $3,labelCount++);}
+                | comparison T_LEQ term                                           {$$ = new lessThanEqual($1, $3,labelCount++);}
+                | comparison T_GEQ term                                           {$$ = new greaterThanEqual($1, $3,labelCount++);}
                 | term                                                              {$$ = $1;}
                 ;
 

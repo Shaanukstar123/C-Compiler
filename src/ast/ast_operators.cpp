@@ -35,6 +35,7 @@ void equivalenceOperator::codeGeneration(std::ofstream &outputFile, variableCont
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
+    outputFile << "seq " << destReg << ",$8,$9" << std::endl;
 }
 
 //Less than
@@ -48,6 +49,8 @@ void lessThan::codeGeneration(std::ofstream &outputFile, variableContext const &
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
+    outputFile << "slt " << destReg << ",$8,$9" << std::endl;
+    
 }
 
 //Greater than
@@ -61,6 +64,7 @@ void greaterThan::codeGeneration(std::ofstream &outputFile, variableContext cons
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
+    outputFile << "sgt " << destReg << ",$8,$9" << std::endl;
 }
 
 //lessThanEqual
@@ -74,6 +78,7 @@ void lessThanEqual::codeGeneration(std::ofstream &outputFile, variableContext co
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
     //outputFile<<"sub $2,$8,$9"<<std::endl;
+    outputFile << "sle " << destReg << ",$8,$9" << std::endl;
 }
 
 //GreaterThanEqual
@@ -87,14 +92,8 @@ void greaterThanEqual::codeGeneration(std::ofstream &outputFile, variableContext
     std::cout << "greather than equals operation\n";
     leftOp->codeGeneration(outputFile, nodeVariables, nodeVariableTypes, variableRegisters, "$8");//evaluate and store in temp regs
     rightOp->codeGeneration(outputFile, nodeVariables,nodeVariableTypes, variableRegisters, "$9");
-    outputFile<<"bne $8,$9,"<<branchLabel<<std::endl;
-    outputFile<<"li "<<destReg<<",1"<<std::endl;
-    outputFile<<"b "<<branchEnd<<std::endl;
-    outputFile<<branchLabel<<":"<<std::endl;
-    outputFile<<"li "<<destReg<<",0"<<std::endl;
-    outputFile<<"b "<<branchEnd<<std::endl;
-    outputFile<<branchEnd<<":"<<std::endl;
     //outputFile<<"sub $2,$8,$9"<<std::endl;
+    outputFile << "sge " << destReg << ",$8,$9" << std::endl;
 }
 
 //Incrementation
