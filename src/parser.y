@@ -97,6 +97,7 @@ declaration     : dataType T_IDENTIFIER ';'                                     
 
 dataType        : T_INT                                                             {$$ = new std::string("int");}
                 | T_FLOAT                                                           {$$ = new std::string("float");}
+                ;
 
 //Keywords
 keyword         : T_RETURN expression ';'                                           {$$ = new Return($2);}
